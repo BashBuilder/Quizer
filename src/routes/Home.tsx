@@ -19,7 +19,7 @@ function Home() {
           </div>
         </div>
         <div className="col-span-12 col-start-7">
-          <img src="assets/homeIcon.png" alt="welcome" className="w-full " />
+          <img src="assets/homeIcon.png" alt="welcome" className="w-full" />
         </div>
       </section>
     </div>
