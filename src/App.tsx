@@ -1,13 +1,15 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./routes/Home";
+import Auth from "./routes/Auth";
 
 function App() {
   return (
-    <main className="mx-auto max-w-[1440px] px-4 py-2 md:px-8   ">
+    <main className="mx-auto max-w-[1440px] ">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
         </Routes>
       </BrowserRouter>
     </main>

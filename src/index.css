@@ -57,24 +57,33 @@
     @apply bg-background text-foreground;
   }
   h1 {
-    @apply text-5xl font-bold;
+    @apply cursor-default text-5xl font-bold;
   }
   h2 {
-    @apply text-4xl font-bold;
+    @apply cursor-default text-4xl font-bold;
   }
   h3 {
-    @apply text-3xl font-bold;
+    @apply cursor-default text-3xl font-bold;
   }
   h4 {
-    @apply text-2xl font-bold;
+    @apply cursor-default text-2xl font-bold;
   }
   h5 {
-    @apply text-xl font-bold;
+    @apply cursor-default text-xl font-bold;
   }
   h6 {
-    @apply text-base font-bold;
+    @apply cursor-default text-base font-bold;
+  }
+  p {
+    @apply cursor-default;
   }
   button {
     @apply rounded-md px-4 py-2;
+  }
+  section {
+    @apply px-4 md:px-16 xl:px-32;
+  }
+  input {
+    @apply autofill:duration-infinite autofill:appearance-none autofill:bg-transparent autofill:bg-opacity-0 autofill:bg-none autofill:transition-colors;
   }
 }
