@@ -26,7 +26,7 @@ export default function LoginUser({ isLogin }: LoginProps) {
   };
   return (
     <form
-      className={` relative flex flex-col items-center justify-center overflow-hidden px-4 transition-all  duration-500 ease-in-out sm:px-0 md:px-8 xl:px-16  ${
+      className={` relative flex flex-col items-center overflow-hidden px-4 pt-20 transition-all duration-500 ease-in-out  sm:px-0 md:justify-center md:pt-0 xl:px-16  ${
         isLogin
           ? " delay-500"
           : " pointer-events-none z-[1] opacity-0 delay-100 "
