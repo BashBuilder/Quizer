@@ -84,6 +84,6 @@
     @apply px-4 md:px-16 xl:px-32;
   }
   input {
-    @apply autofill:duration-infinite autofill:appearance-none autofill:bg-transparent autofill:bg-opacity-0 autofill:bg-none autofill:transition-colors;
+    @apply autofill:appearance-none autofill:bg-transparent autofill:bg-opacity-0 autofill:bg-none autofill:transition-colors autofill:duration-infinite;
   }
 }

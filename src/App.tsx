@@ -5,7 +5,7 @@ import Auth from "./routes/Auth";
 
 function App() {
   return (
-    <main className="mx-auto max-w-[1440px] ">
+    <main className="mx-auto max-w-[92rem] ">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
