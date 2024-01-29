@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between gap-4 px-2 py-4 shadow-xl md:px-16  ">
+    <nav className="flex items-center justify-between gap-4 px-4 py-6 shadow-xl md:px-16  ">
       <div>
         <h2>Quizer</h2>
       </div>
