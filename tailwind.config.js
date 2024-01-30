@@ -59,6 +59,7 @@ module.exports = {
       },
       transitionDuration: {
         2000: "2000ms",
+        50000: "50000ms",
         infinite: "900000000000000000000ms",
       },
       keyframes: {

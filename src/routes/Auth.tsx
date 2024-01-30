@@ -6,7 +6,7 @@ export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   return (
     <section className="h-screen items-center justify-center p-0 md:flex ">
-      <div className=" relative h-screen min-h-[600px] w-full overflow-hidden bg-red-100 md:h-[500px] md:w-11/12 md:max-w-4xl md:rounded-3xl">
+      <div className=" relative h-screen min-h-[600px] w-full overflow-hidden md:h-[500px] md:w-11/12 md:max-w-4xl md:rounded-3xl md:bg-red-50">
         <div
           className={`absolute h-[110%] w-[150%] rounded-full bg-primary transition-all duration-1000  ease-in-out md:top-1/2 md:w-full md:-translate-y-1/2 md:rounded-[10rem] ${isLogin ? "bottom-[60%] md:-left-1/2 " : "-bottom-2/3 md:left-1/2"} `}
         />

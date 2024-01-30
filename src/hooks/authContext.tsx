@@ -2,7 +2,7 @@ import React, { createContext, useContext, ReactNode, useState } from "react";
 
 interface User {
   username: string;
-  email: string;
+  token: string;
 }
 
 interface AuthContextProps {
@@ -21,16 +21,60 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User>();
 
-  const login = (username: string, password: string) => {
-    console.log(username, password);
+  const login = async (username: string, password: string) => {
+    const loginData = { username, password };
+    try {
+      const response = await fetch(import.meta.env.VITE_LOGIN_URI, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Contenr-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      setUser(data);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const signup = (username: string, password: string) => {
-    console.log(username, password);
+
+  const signup = async (username: string, password: string) => {
+    try {
+      const signupData = { username, password };
+      const response = await fetch(import.meta.env.VITE_SIGNUP_URI, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      setUser(data);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const logout = () => {};
+  const logout = () => {
+    setUser({ username: "", token: "" });
+    setIsAuthenticated(false);
+  };
 
   const contextValue: AuthContextProps = {
+    user,
     login,
     signup,
     logout,

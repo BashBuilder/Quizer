@@ -53,7 +53,7 @@ export default function LoginUser({ isLogin }: LoginProps) {
           className="absolute -left-2 -top-3 scale-[.8] text-lg text-primary transition-all  duration-200 ease-linear peer-placeholder-shown:left-2 peer-placeholder-shown:top-3 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-slate-600 peer-focus:-left-2 peer-focus:-top-3 peer-focus:scale-[.8] peer-focus:text-primary"
           htmlFor="loginEmail"
         >
-          Email
+          Email or Username
         </label>
       </div>
       <div className="relative mb-6 w-11/12 max-w-[23rem]">
