@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/authContext";
 
 export default function Navbar() {
-  const isAuthenticated = true;
-  const user = "Timmy";
+  const { isAuthenticated, user } = useAuthContext();
+  const { name }: { name?: string } = user || {};
 
   return (
     <nav className="flex items-center justify-between gap-4 bg-background px-4 py-6 shadow-xl md:px-16  ">
@@ -40,7 +41,7 @@ export default function Navbar() {
                   fill="#FD4C00"
                 />
               </svg>
-              <span> {user} </span>
+              <span> {name} </span>
               <svg width="10" viewBox="0 0 26 29" className="rotate-90">
                 <path
                   d="M25.5 14.5L0.749999 28.7894L0.75 0.21058L25.5 14.5Z"

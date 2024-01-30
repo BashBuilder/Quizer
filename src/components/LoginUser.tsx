@@ -9,9 +9,10 @@ interface LoginProps {
 }
 
 export default function LoginUser({ isLogin }: LoginProps) {
-  const { login } = useAuthContext();
+  const { login, loginState } = useAuthContext();
+  const { loading, error } = loginState;
   const loginSchema = z.object({
-    email: z.string().email({ message: "Enter a valid email" }),
+    email: z.string().min(1, { message: "Enter your email or username" }),
     password: z.string().min(1, { message: "Enter your password" }),
   });
 
@@ -20,13 +21,14 @@ export default function LoginUser({ isLogin }: LoginProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginSchemaType>({ resolver: zodResolver(loginSchema) });
 
   const loginUser: SubmitHandler<LoginSchemaType> = (data) => {
     const { email, password } = data;
     login(email, password);
   };
+
   return (
     <form
       className={` relative flex flex-col items-center overflow-hidden px-4 pt-20 transition-all duration-500 ease-in-out  sm:px-0 md:justify-center md:pt-0 xl:px-16  ${
@@ -37,7 +39,10 @@ export default function LoginUser({ isLogin }: LoginProps) {
       onSubmit={handleSubmit(loginUser)}
     >
       <h2 className=" pb-2 font-bold text-slate-700 ">Login</h2>
-      <div className="relative mb-6 mt-5 w-11/12 max-w-[23rem] ">
+
+      {/* Email / Username container */}
+
+      <div className="relative mb-8 mt-5 w-11/12 max-w-[23rem] ">
         <input
           className={`peer mt-2 w-full border-b-[.015rem] border-b-primary bg-transparent pb-1 pl-2 pr-12 pt-2 text-lg leading-[1] text-[--slate-800]  outline-none placeholder:text-transparent ${errors.email ? "placeholder-shown:border-b-red-500 focus:border-b-red-500 " : "placeholder-shown:border-b-slate-600 focus:border-b-primary"} `}
           type="text"
@@ -55,8 +60,14 @@ export default function LoginUser({ isLogin }: LoginProps) {
         >
           Email or Username
         </label>
+        {errors.email && (
+          <p className="absolute text-red-500">{errors.email.message}</p>
+        )}
       </div>
-      <div className="relative mb-6 w-11/12 max-w-[23rem]">
+
+      {/* password container */}
+
+      <div className="relative mb-10 w-11/12 max-w-[23rem]">
         <Lock
           className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
           size={20}
@@ -85,9 +96,10 @@ export default function LoginUser({ isLogin }: LoginProps) {
           Forgot password
         </h6> */}
       </div>
-      <div className="flex items-center justify-center">
-        <button className="bg-primary text-white ">
-          {isSubmitting ? <Loader2 className="animate-spin" /> : "Login"}
+      {error && <p className="text-red-500"> {error} </p>}
+      <div className="mt-4 flex items-center justify-center">
+        <button className="bg-primary text-white" disabled={loading}>
+          {loading ? <Loader2 className="animate-spin" /> : "Login"}
         </button>
       </div>
     </form>
