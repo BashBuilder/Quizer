@@ -33,9 +33,10 @@ export default function SignupUser({ isLogin }: LoginProps) {
     formState: { errors },
   } = useForm<LoginSchemaType>({ resolver: zodResolver(loginSchema) });
 
-  const signupUser: SubmitHandler<LoginSchemaType> = (data) =>
-    signup(data.username, data.email, data.password);
-
+  const signupUser: SubmitHandler<LoginSchemaType> = (data) => {
+    console.log(data);
+    signup(data.email, data.password, data.username);
+  };
   return (
     <form
       className={` relative flex flex-col items-center justify-center overflow-hidden px-4 transition-all duration-500  ease-in-out xl:px-16  ${
@@ -131,7 +132,7 @@ export default function SignupUser({ isLogin }: LoginProps) {
           <p className="text-red-500"> {errors.confirmPassword.message} </p>
         )
       )}
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         {error && <p className="text-red-500">{error}</p>}
         <button className="mt-2 bg-primary text-white ">
           {loading ? <Loader2 className="animate-spin" /> : "Sign Up"}

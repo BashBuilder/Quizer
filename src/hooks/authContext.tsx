@@ -22,7 +22,7 @@ interface AuthContextProps {
   signup: (username: string, email: string, password: string) => void;
   signupState: FormState;
   logout: () => void;
-  isAuthenticated: boolean;
+  isAuthenticated: string;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -32,7 +32,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState("");
   const [user, setUser] = useState<User>({ name: "", token: "" });
   const [loginState, setLoginState] = useState<FormState>({
     loading: false,
@@ -81,10 +81,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const signup = async (username: string, email: string, password: string) => {
+  const signup = async (email: string, password: string, username: string) => {
     try {
-      const signupData = { username, email, password };
       setSignupState({ error: "", loading: true });
+      const signupData = { email, password, username };
+      console.log(signupData);
       const response = await fetch(import.meta.env.VITE_SIGNUP_URI, {
         method: "POST",
         headers: {
@@ -109,7 +110,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setSignupState((prevState) => ({ ...prevState, error: data.error }));
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      setUser(data);
+      setUser({ name: data.email, token: data.token });
+      localStorage.setItem("quizerUser", JSON.stringify(data));
       setIsAuthenticated(data.token);
     } catch (error) {
       console.error(error);
@@ -121,7 +123,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("quizerUser");
     setUser({ name: "", token: "" });
-    setIsAuthenticated(false);
+    setIsAuthenticated("");
   };
 
   // authenticate on reload
@@ -130,7 +132,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (localUserJSON) {
       const localUser: User = JSON.parse(localUserJSON);
       setUser(localUser);
-      setIsAuthenticated(true);
+      setIsAuthenticated(localUser.token);
     }
   }, []);
 

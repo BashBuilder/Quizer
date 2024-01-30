@@ -9,6 +9,8 @@ import { useAuthContext } from "./hooks/authContext";
 function App() {
   const { isAuthenticated } = useAuthContext();
 
+  console.log(isAuthenticated);
+
   return (
     <main className="mx-auto max-w-[92rem]">
       <BrowserRouter>
