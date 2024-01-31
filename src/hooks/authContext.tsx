@@ -1,3 +1,4 @@
+import { FormState } from "@/data/quizTypes";
 import React, {
   createContext,
   useContext,
@@ -10,11 +11,6 @@ interface User {
   name: string;
   token: string;
 }
-interface FormState {
-  error: string;
-  loading: boolean;
-}
-
 interface AuthContextProps {
   user: User;
   login: (email: string, password: string) => void;

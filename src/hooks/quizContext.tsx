@@ -6,30 +6,8 @@ import React, {
   useEffect,
 } from "react";
 import { useAuthContext } from "./authContext";
-
-interface Quiz {
-  type: boolean;
-  difficulty: string;
-  category: string;
-  question: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-}
-interface FormState {
-  error: string;
-  loading: boolean;
-}
-
-interface QuizContextProps {
-  quiz: Quiz | undefined;
-  getQuiz: (
-    amount: string | number,
-    category: string,
-    difficulty: string,
-    type: string,
-  ) => void;
-  formState: FormState;
-}
+import { FormState, Quiz, QuizContextProps, Result } from "@/data/quizTypes";
+import { initialQuizState, initialResultState } from "@/data/data";
 
 const QuizContext = createContext<QuizContextProps | undefined>(undefined);
 
@@ -39,7 +17,9 @@ interface QuizProviderProps {
 
 const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
   const { user } = useAuthContext();
-  const [quiz, setQuiz] = useState<Quiz>();
+  const [quiz, setQuiz] = useState<Quiz[]>([initialQuizState]);
+  const [result, setResult] = useState<Result>(initialResultState);
+
   const [formState, setFormState] = useState<FormState>({
     loading: false,
     error: "",
@@ -88,10 +68,15 @@ const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
     }
   };
 
+  const setOptions = (number: number, answer: string) =>
+    setResult((prev) => ({
+      ...prev,
+      answers: [...prev.answers, { number, answer }],
+    }));
+
   useEffect(() => {
     const quizJson = localStorage.getItem("quizerQuiz");
     if (quizJson) {
-      // If "quizerQuiz" exists in localStorage
       setQuiz(JSON.parse(quizJson)); // Parse and set the object to the quiz state
     }
   }, []);
@@ -100,6 +85,8 @@ const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
     quiz,
     getQuiz,
     formState,
+    result,
+    setOptions,
   };
 
   return (

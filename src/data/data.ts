@@ -1,3 +1,5 @@
+import { Quiz, Result } from "./quizTypes";
+
 export const quizCategories = {
   GeneralKnowledge: 9,
   Books: 10,
@@ -18,5 +20,24 @@ export const quizCategories = {
   Comics: 29,
   Animation: 32,
 };
-
-
+export const initialQuizState: Quiz = {
+  type: "",
+  difficulty: "",
+  category: "",
+  question: "",
+  correct_answer: "",
+  incorrect_answers: [""],
+};
+export const initialResultState: Result = {
+  score: 0,
+  answers: [
+    {
+      number: 1,
+      answer: "",
+    },
+  ],
+  questionAttempts: 0,
+  questionsFailed: 0,
+  isubmitted: true,
+  questionsAnswered: [initialQuizState],
+};
