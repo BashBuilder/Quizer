@@ -5,16 +5,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { quizCategories } from "../data/data";
 import { useQuizContext } from "@/hooks/quizContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Quiz() {
-  const { getQuiz, formState } = useQuizContext();
+export default function GetQuiz() {
+  const { getQuiz, formState, quiz } = useQuizContext();
   const { loading, error } = formState;
+  const navigate = useNavigate();
 
   const quizSchema = z.object({
-    amount: z.union([z.string(), z.number()]),
-    category: z.string(),
-    type: z.string(),
-    difficulty: z.string(),
+    amount: z.union([
+      z.string().min(1, { message: "Fill all the forms" }),
+      z.number(),
+    ]),
+    category: z.string().min(1, { message: "Fill all the forms" }),
+    type: z.string().min(1, { message: "Fill all the forms" }),
+    difficulty: z.string().min(1, { message: "Fill all the forms" }),
   });
 
   type QuizSchemaType = z.infer<typeof quizSchema>;
@@ -27,8 +32,8 @@ export default function Quiz() {
 
   const submitQuiz: SubmitHandler<QuizSchemaType> = (data) => {
     // data.amount = parseFloat(data.amount);
-    console.log(data);
     getQuiz(data.amount, data.category, data.difficulty, data.type);
+    !loading && quiz && navigate("/answerQuiz");
   };
 
   return (
@@ -39,7 +44,7 @@ export default function Quiz() {
         className="absolute -z-10 h-full w-full bg-cover opacity-10"
       />
       <Navbar />
-      <section className="h-[80%] pt-12 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
+      <section className="h-[80%] pt-4 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
         {/* left container pencil */}
         <div className="col-span-6 hidden h-full items-center md:flex ">
           <img
@@ -49,15 +54,17 @@ export default function Quiz() {
           />
         </div>
         {/* right form container  */}
-        <div className="flex items-center justify-center md:col-span-6 md:text-left ">
+        <div className="flex min-h-full items-center justify-center md:col-span-6 md:text-left ">
           <form
             onSubmit={handleSubmit(submitQuiz)}
-            className=" flex w-4/5 max-w-[25rem] flex-col gap-6 rounded-xl bg-white p-10  "
+            className=" flex w-4/5 max-w-[25rem] flex-col gap-4 rounded-xl bg-white   "
           >
             <h2 className="capitalize text-slate-700 ">setup quiz</h2>
             {/* amount */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="amount">Number of Questions</label>
+              <label htmlFor="amount" className="font-semibold text-slate-500">
+                Number of Questions
+              </label>
               <input
                 type="number"
                 id="amount"
@@ -69,7 +76,12 @@ export default function Quiz() {
             </div>
             {/* category */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="category">Category</label>
+              <label
+                htmlFor="category"
+                className="font-semibold text-slate-500"
+              >
+                Category
+              </label>
               <select
                 id="category"
                 className="rounded-md bg-red-50 p-2"
@@ -84,7 +96,12 @@ export default function Quiz() {
             </div>
             {/* difficulty */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="difficulty">Select Difficulty</label>
+              <label
+                htmlFor="difficulty"
+                className="font-semibold text-slate-500"
+              >
+                Select Difficulty
+              </label>
               <select
                 className=" rounded-md bg-red-50 p-2 "
                 {...register("difficulty")}
@@ -95,7 +112,12 @@ export default function Quiz() {
               </select>
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="difficulty">Exam Type</label>
+              <label
+                htmlFor="difficulty"
+                className="font-semibold text-slate-500"
+              >
+                Exam Type
+              </label>
               <select
                 className=" rounded-md bg-red-50 p-2 "
                 {...register("type")}

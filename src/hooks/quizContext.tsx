@@ -63,6 +63,7 @@ const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
         },
       });
       const data = await response.json();
+      console.log(data.results);
       if (!response.ok) {
         if (
           data.error.includes(
@@ -89,7 +90,10 @@ const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const quizJson = localStorage.getItem("quizerQuiz");
-    if (quizJson) setQuiz(JSON.parse(quizJson));
+    if (quizJson) {
+      // If "quizerQuiz" exists in localStorage
+      setQuiz(JSON.parse(quizJson)); // Parse and set the object to the quiz state
+    }
   }, []);
 
   const contextValue: QuizContextProps = {

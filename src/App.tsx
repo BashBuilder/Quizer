@@ -2,15 +2,13 @@ import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./routes/Home";
 import Auth from "./routes/Auth";
-import Quiz from "./routes/Quiz";
+import GetQuiz from "./routes/GetQuiz";
 import Result from "./routes/Result";
 import { useAuthContext } from "./hooks/authContext";
+import AnswerQuiz from "./routes/AnswerQuiz";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
-
-  console.log(isAuthenticated);
-
   return (
     <main className="mx-auto max-w-[92rem]">
       <BrowserRouter>
@@ -22,7 +20,11 @@ function App() {
           />
           <Route
             path="/quiz"
-            element={isAuthenticated ? <Quiz /> : <Navigate to="/auth" />}
+            element={isAuthenticated ? <GetQuiz /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/answerQuiz"
+            element={isAuthenticated ? <AnswerQuiz /> : <Navigate to="/auth" />}
           />
           <Route
             path="/result"
