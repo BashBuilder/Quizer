@@ -1,25 +1,15 @@
-import React, {
-  createContext,
-  useContext,
-  ReactNode,
-  useState,
-  useEffect,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuthContext } from "./authContext";
 import { FormState, Quiz, QuizContextProps, Result } from "@/data/quizTypes";
 import { initialQuizState, initialResultState } from "@/data/data";
+import { ProviderChildrenProps } from "@/data/authTypes";
 
 const QuizContext = createContext<QuizContextProps | undefined>(undefined);
 
-interface QuizProviderProps {
-  children: ReactNode;
-}
-
-const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
+const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const { user } = useAuthContext();
   const [quiz, setQuiz] = useState<Quiz[]>([initialQuizState]);
   const [result, setResult] = useState<Result>(initialResultState);
-
   const [formState, setFormState] = useState<FormState>({
     loading: false,
     error: "",
@@ -60,6 +50,7 @@ const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       setQuiz(data.results);
+      setResult((prev) => ({ ...prev, isubmitted: false }));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
     } catch (error) {
       console.error(error);
@@ -68,25 +59,55 @@ const QuizProvider: React.FC<QuizProviderProps> = ({ children }) => {
     }
   };
 
-  const setOptions = (number: number, answer: string) =>
-    setResult((prev) => ({
-      ...prev,
-      answers: [...prev.answers, { number, answer }],
+  const setOptions = (number: number, answer: string) => {
+    setResult((prev) => {
+      // Check if an answer with the same number already exists
+      const existingAnswerIndex = prev.answers.findIndex(
+        (item) => item.number === number,
+      );
+      if (existingAnswerIndex !== -1) {
+        // If the answer with the same number exists, update it
+        const updatedAnswers = [...prev.answers];
+        updatedAnswers[existingAnswerIndex] = { number, answer };
+        return { ...prev, answers: updatedAnswers };
+      } else {
+        // If the answer with the same number doesn't exist, add a new one
+        return { ...prev, answers: [...prev.answers, { number, answer }] };
+      }
+    });
+  };
+
+  const submitQuiz = () => {
+    // get all the answers from the questions
+    setResult((prev) => ({ ...prev, isubmitted: true }));
+    const correctAnswer = quiz.map((item, index) => ({
+      number: index + 1,
+      answer: item.correct_answer,
     }));
 
-  useEffect(() => {
-    const quizJson = localStorage.getItem("quizerQuiz");
-    if (quizJson) {
-      setQuiz(JSON.parse(quizJson)); // Parse and set the object to the quiz state
-    }
-  }, []);
-
+    const count = correctAnswer.reduce((acc, ans) => {
+      const matchingAnswer = result.answers.find(
+        (userAnswer) => userAnswer.number === ans.number,
+      );
+      if (matchingAnswer && ans.answer === matchingAnswer.answer) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+    setResult((prev) => ({
+      ...prev,
+      score: count,
+      isubmitted: true,
+      correctAnswer,
+    }));
+  };
   const contextValue: QuizContextProps = {
     quiz,
     getQuiz,
     formState,
     result,
     setOptions,
+    submitQuiz,
   };
 
   return (

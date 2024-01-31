@@ -1,33 +1,14 @@
+import {
+  AuthContextProps,
+  ProviderChildrenProps,
+  User,
+} from "@/data/authTypes";
 import { FormState } from "@/data/quizTypes";
-import React, {
-  createContext,
-  useContext,
-  ReactNode,
-  useState,
-  useEffect,
-} from "react";
-
-interface User {
-  name: string;
-  token: string;
-}
-interface AuthContextProps {
-  user: User;
-  login: (email: string, password: string) => void;
-  loginState: FormState;
-  signup: (username: string, email: string, password: string) => void;
-  signupState: FormState;
-  logout: () => void;
-  isAuthenticated: string;
-}
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState("");
   const [user, setUser] = useState<User>({ name: "", token: "" });
   const [loginState, setLoginState] = useState<FormState>({

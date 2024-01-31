@@ -9,6 +9,7 @@ export interface QuizContextProps {
   formState: FormState;
   result: Result;
   setOptions: (number: number, answer: string) => void;
+  submitQuiz: () => void;
 }
 export interface FormState {
   error: string;
@@ -25,6 +26,10 @@ export interface Quiz {
 export interface Result {
   score: number;
   answers: {
+    number: number;
+    answer: string;
+  }[];
+  correctAnswer: {
     number: number;
     answer: string;
   }[];

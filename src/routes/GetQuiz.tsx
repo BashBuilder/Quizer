@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { quizCategories } from "../data/data";
 import { useQuizContext } from "@/hooks/quizContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function GetQuiz() {
   const { getQuiz, formState, quiz } = useQuizContext();
@@ -17,7 +18,7 @@ export default function GetQuiz() {
       z.string().min(1, { message: "Fill all the forms" }),
       z.number(),
     ]),
-    category: z.string().min(1, { message: "Fill all the forms" }),
+    category: z.string().min(2, { message: "Fill all the forms" }),
     type: z.string().min(1, { message: "Fill all the forms" }),
     difficulty: z.string().min(1, { message: "Fill all the forms" }),
   });
@@ -31,10 +32,13 @@ export default function GetQuiz() {
   } = useForm<QuizSchemaType>({ resolver: zodResolver(quizSchema) });
 
   const submitQuiz: SubmitHandler<QuizSchemaType> = (data) => {
-    // data.amount = parseFloat(data.amount);
     getQuiz(data.amount, data.category, data.difficulty, data.type);
-    !loading && quiz && navigate("/answerQuiz");
   };
+
+  useEffect(() => {
+    !loading && quiz?.length > 1 ? navigate("/answerQuiz") : navigate("/quiz");
+    // eslint-disable-next-line
+  }, [loading]);
 
   return (
     <div className=" relative h-screen min-h-[600px] ">
@@ -69,8 +73,9 @@ export default function GetQuiz() {
                 type="number"
                 id="amount"
                 className="rounded-md bg-red-50 px-4 py-2"
-                min={1}
+                min={2}
                 max={50}
+                defaultValue={2}
                 {...register("amount")}
               />
             </div>
@@ -138,7 +143,8 @@ export default function GetQuiz() {
             )}
             <button
               type="submit"
-              className="mt-2 flex items-center justify-center border-2 bg-primary text-white"
+              className="mt-2 flex items-center justify-center border-2 bg-primary text-white disabled:opacity-35"
+              disabled={loading}
             >
               {loading ? <Loader2 className="animate-spin" /> : "Start"}
             </button>
