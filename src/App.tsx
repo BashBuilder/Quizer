@@ -21,7 +21,7 @@ function App() {
           alt="background"
           className="absolute -z-10 h-screen w-full object-cover opacity-10"
         />
-        <Navbar />
+        {window.location.pathname !== "/auth" && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route

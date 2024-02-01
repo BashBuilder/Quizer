@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./authContext";
 import { FormState, Quiz, QuizContextProps, Result } from "@/data/quizTypes";
 import { initialQuizState, initialResultState } from "@/data/data";
@@ -14,6 +14,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     loading: false,
     error: "",
   });
+  const [isQuizLoading, setIsQuizLoading] = useState(true);
 
   const getQuiz = async (
     amount: string | number,
@@ -33,7 +34,6 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         },
       });
       const data = await response.json();
-      console.log(data.results);
       if (!response.ok) {
         if (
           data.error.includes(
@@ -50,6 +50,11 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       setQuiz(data.results);
+      data.results.length === 0 &&
+        setFormState((prev) => ({
+          ...prev,
+          error: "No Questions Available, try again",
+        }));
       setResult((prev) => ({ ...prev, isubmitted: false }));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
     } catch (error) {
@@ -79,28 +84,42 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   const submitQuiz = () => {
     // get all the answers from the questions
-    setResult((prev) => ({ ...prev, isubmitted: true }));
-    const correctAnswer = quiz.map((item, index) => ({
-      number: index + 1,
-      answer: item.correct_answer,
-    }));
-
-    const count = correctAnswer.reduce((acc, ans) => {
-      const matchingAnswer = result.answers.find(
-        (userAnswer) => userAnswer.number === ans.number,
-      );
-      if (matchingAnswer && ans.answer === matchingAnswer.answer) {
-        return acc + 1;
-      }
-      return acc;
-    }, 0);
-    setResult((prev) => ({
-      ...prev,
-      score: count,
-      isubmitted: true,
-      correctAnswer,
-    }));
+    if (!result.isubmitted) {
+      setResult((prev) => ({ ...prev, isubmitted: true }));
+      const correctAnswer = quiz.map((item, index) => ({
+        number: index + 1,
+        answer: item.correct_answer,
+      }));
+      const count = correctAnswer.reduce((acc, ans) => {
+        const matchingAnswer = result.answers.find(
+          (userAnswer) => userAnswer.number === ans.number,
+        );
+        if (matchingAnswer && ans.answer === matchingAnswer.answer) {
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+      setResult((prev) => ({
+        ...prev,
+        score: count,
+        isubmitted: true,
+        correctAnswer,
+      }));
+    } else {
+      setResult((prev) => ({ ...prev, isubmitted: false }));
+      setQuiz([initialQuizState]);
+    }
   };
+
+  useEffect(() => {
+    setIsQuizLoading(true);
+    const quizJson = localStorage.getItem("quizerQuiz");
+    if (quizJson) {
+      setQuiz(JSON.parse(quizJson));
+    }
+    setIsQuizLoading(false);
+  }, []);
+
   const contextValue: QuizContextProps = {
     quiz,
     getQuiz,
@@ -111,7 +130,9 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   };
 
   return (
-    <QuizContext.Provider value={contextValue}>{children}</QuizContext.Provider>
+    <QuizContext.Provider value={contextValue}>
+      {!isQuizLoading && children}
+    </QuizContext.Provider>
   );
 };
 

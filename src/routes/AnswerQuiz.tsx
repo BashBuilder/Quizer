@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import { initialQuizState } from "@/data/data";
 import { Quiz } from "@/data/quizTypes";
 import { useQuizContext } from "@/hooks/quizContext";
@@ -15,11 +14,13 @@ export default function AnswerQuiz() {
 
   const navigate = useNavigate();
 
+  // Set questions base on the current question index
   useEffect(() => {
     setQuestion(quiz[quizIndex]);
     // eslint-disable-next-line
   }, [quizIndex]);
 
+  // shuffle the currect option and the incorrect options
   useEffect(() => {
     const allOptions = [question.correct_answer, ...question.incorrect_answers];
     const shuffledOptions: string[] = allOptions.sort(
@@ -29,26 +30,25 @@ export default function AnswerQuiz() {
     // eslint-disable-next-line
   }, [question]);
 
+  // Navigate between questions based on button clics
   const handleNextQuestion = (num: number) =>
     setQuizIndex((prev) => prev + num);
 
+  // handle navigation when quiz is submitted
   const handleSubmitQuiz = () => {
+    !isubmitted ? navigate("/results") : navigate("/");
     submitQuiz();
-    navigate("/result");
   };
 
   return (
     <div>
-      <Navbar />
       <section className="flex min-h-[600px] flex-col items-center justify-center gap-6 ">
-        {!isubmitted && (
-          <button
-            className="bg-orange-600 text-lg font-semibold text-white hover:opacity-90 hover:shadow-md"
-            onSubmit={handleSubmitQuiz}
-          >
-            Submit
-          </button>
-        )}
+        <button
+          className="bg-orange-600 text-lg font-semibold text-white hover:opacity-90 hover:shadow-md"
+          onClick={handleSubmitQuiz}
+        >
+          {!isubmitted ? "Submit" : "Home"}
+        </button>
         {/* Display questions */}
         <article className=" mx-auto flex min-h-96 w-[90vw] max-w-5xl flex-col gap-8 rounded-3xl bg-orange-100 p-4  shadow-2xl md:px-20 md:py-10 ">
           <div className="flex justify-center gap-2 text-center">
@@ -68,12 +68,12 @@ export default function AnswerQuiz() {
               const isOption = currentOption === option;
               let isCorrectAnswer, correction;
               if (isubmitted) {
-                const currentAnswer = correctAnswer.filter(
+                const currentAns = correctAnswer?.filter(
                   (ans) => ans.number === quizIndex + 1,
                 )[0]?.answer;
-                isCorrectAnswer = currentAnswer === currentOption && isOption;
+                isCorrectAnswer = currentAns === currentOption && isOption;
                 correction =
-                  currentAnswer !== currentOption && currentAnswer === option;
+                  currentAns !== currentOption && currentAns === option;
               }
 
               return (

@@ -1,3 +1,6 @@
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  return (
+    // page container
+    <div className="relative">dashboard</div>
+  );
 }

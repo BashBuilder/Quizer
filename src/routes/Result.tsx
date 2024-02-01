@@ -1,14 +1,17 @@
-import Navbar from "@/components/Navbar";
 import { useQuizContext } from "@/hooks/quizContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Result() {
-  const { result } = useQuizContext();
+  const { result, submitQuiz } = useQuizContext();
   const navigate = useNavigate();
+
+  const handleAnotherQuiz = () => {
+    navigate("/quiz");
+    submitQuiz();
+  };
 
   return (
     <div>
-      <Navbar />
       <section className="h-[80%] min-h-[600px] pt-4 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
         <div className=" col-span-6 mx-auto flex h-full min-h-[500px] flex-col items-center justify-center gap-10  md:items-start ">
           <h1>Weldone</h1>
@@ -18,14 +21,17 @@ export default function Result() {
           <p>ToTal Questions {result.questionsAnswered.length} </p>
 
           <div>
-            <button className="bg-primary font-semibold text-white">
+            <button
+              className="bg-primary font-semibold text-white"
+              onClick={() => navigate("/answerQuiz")}
+            >
               Review Questions
             </button>
           </div>
           <div>
             <button
               className="bg-primary font-semibold text-white"
-              onClick={() => navigate("/quiz")}
+              onClick={handleAnotherQuiz}
             >
               Take another Quiz
             </button>

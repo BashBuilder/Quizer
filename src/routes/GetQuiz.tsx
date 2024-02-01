@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { quizCategories } from "../data/data";
@@ -19,6 +19,7 @@ export default function GetQuiz() {
   const { loading, error } = formState;
   const navigate = useNavigate();
 
+  // zod schema validation
   const quizSchema = z.object({
     amount: z.union([
       z.string().min(1, { message: "Fill all the forms" }),
@@ -28,19 +29,22 @@ export default function GetQuiz() {
     type: z.string().min(1, { message: "Fill all the forms" }),
     difficulty: z.string().min(1, { message: "Fill all the forms" }),
   });
-
   type QuizSchemaType = z.infer<typeof quizSchema>;
 
+  // useform setup
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<QuizSchemaType>({ resolver: zodResolver(quizSchema) });
 
+  // send the question request
   const submitQuiz: SubmitHandler<QuizSchemaType> = (data) => {
     getQuiz(data.amount, data.category, data.difficulty, data.type);
   };
 
+  // navigate appropriately when question is submitted
   useEffect(() => {
     !loading && quiz?.length > 1 ? navigate("/answerQuiz") : navigate("/quiz");
     // eslint-disable-next-line
@@ -88,59 +92,81 @@ export default function GetQuiz() {
             {/* category */}
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-slate-500">Category</p>
-              <Select>
-                <SelectTrigger className="w-full bg-orange-50">
-                  <SelectValue placeholder="Select Question Category" />
-                </SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {Object.keys(quizCategories).map((category, index) => (
-                    <SelectItem
-                      key={index}
-                      value={category}
-                      className="capitalize"
-                    >
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Controller
+                control={control}
+                name="category"
+                render={({ field }) => {
+                  return (
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full bg-orange-50">
+                        <SelectValue placeholder="Select Question Category" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-60">
+                        {Object.keys(quizCategories).map((category, index) => (
+                          <SelectItem
+                            key={index}
+                            value={category}
+                            className="capitalize"
+                          >
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              />
             </div>
             {/* difficulty */}
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-slate-500">Select Difficulty</p>
-              <Select>
-                <SelectTrigger className="bg-orange-50">
-                  <SelectValue placeholder="Choose a Difficulty Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="easy">Easy</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="hard">Hard</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                control={control}
+                name="difficulty"
+                render={({ field }) => {
+                  return (
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger className="bg-orange-50">
+                        <SelectValue placeholder="Choose a Difficulty Level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="easy">Easy</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="hard">Hard</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              />
             </div>
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-slate-500">Exam Type</p>
-              <Select>
-                <SelectTrigger className="bg-red-50">
-                  <SelectValue placeholder="Choose a Difficulty Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="multiple">Multiple</SelectItem>
-                  <SelectItem value="boolean">True or False</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                control={control}
+                name="type"
+                render={({ field }) => {
+                  return (
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger className="bg-red-50">
+                        <SelectValue placeholder="Choose an Exam Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="multiple">Multiple</SelectItem>
+                        <SelectItem value="boolean">True or False</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              />
             </div>
 
             {(errors.amount ||
               errors.category ||
               errors.difficulty ||
               errors.type) && (
-              <p className="text-red-500"> Fill all the forms kindly </p>
+              <p className="text-center text-red-500 "> Fill all the forms </p>
             )}
-            {error && (
-              <p className="text-red-500"> Fill all the forms kindly </p>
-            )}
+            {error && <p className="text-center text-red-500 "> {error} </p>}
             <button
               type="submit"
               className="mt-2 flex items-center justify-center border-2 bg-primary text-white disabled:opacity-35"
