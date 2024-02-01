@@ -10,6 +10,7 @@ export interface QuizContextProps {
   result: Result;
   setOptions: (number: number, answer: string) => void;
   submitQuiz: () => void;
+  postResult: () => void;
 }
 export interface FormState {
   error: string;

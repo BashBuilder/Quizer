@@ -25,7 +25,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     try {
       setFormState({ error: "", loading: true });
       const quizData = { amount, category, difficulty, type };
-      const response = await fetch(import.meta.env.VITE_LOGIN_GETQUIZ, {
+      const response = await fetch(import.meta.env.VITE_USER_GETQUIZ, {
         method: "POST",
         body: JSON.stringify(quizData),
         headers: {
@@ -55,7 +55,11 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
           ...prev,
           error: "No Questions Available, try again",
         }));
-      setResult((prev) => ({ ...prev, isubmitted: false }));
+      setResult((prev) => ({
+        ...prev,
+        isubmitted: false,
+        questionsAnswered: data.results,
+      }));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
     } catch (error) {
       console.error(error);
@@ -105,9 +109,41 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         isubmitted: true,
         correctAnswer,
       }));
+      postResult();
     } else {
       setResult((prev) => ({ ...prev, isubmitted: false }));
       setQuiz([initialQuizState]);
+    }
+  };
+
+  const postResult = async () => {
+    try {
+      const quizResult: {
+        category: string;
+        score: number;
+        totalQuestions: number;
+        questions: Quiz[];
+      } = {
+        category: result.questionsAnswered[0].category,
+        score: result.score,
+        totalQuestions: result.questionsAnswered.length,
+        questions: result.questionsAnswered,
+      };
+      const response = await fetch(import.meta.env.VITE_USER_SUBMITRESULTS, {
+        method: "POST",
+        body: JSON.stringify(quizResult),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log(data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -127,6 +163,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     result,
     setOptions,
     submitQuiz,
+    postResult,
   };
 
   return (
