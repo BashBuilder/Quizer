@@ -9,7 +9,10 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState<{
+    state: string;
+    loading: boolean;
+  }>({ state: "", loading: true });
   const [user, setUser] = useState<User>({ name: "", token: "" });
   const [loginState, setLoginState] = useState<FormState>({
     loading: false,
@@ -100,16 +103,17 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("quizerUser");
     setUser({ name: "", token: "" });
-    setIsAuthenticated("");
+    setIsAuthenticated({ state: "", loading: false });
   };
 
   // authenticate on reload
   useEffect(() => {
+    setIsAuthenticated({ state: "", loading: true });
     const localUserJSON = localStorage.getItem("quizerUser");
     if (localUserJSON) {
       const localUser: User = JSON.parse(localUserJSON);
       setUser(localUser);
-      setIsAuthenticated(localUser.token);
+      setIsAuthenticated({ state: localUser.token, loading: false });
     }
   }, []);
 
@@ -124,7 +128,9 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>
+      {!isAuthenticated.loading && children}
+    </AuthContext.Provider>
   );
 };
 

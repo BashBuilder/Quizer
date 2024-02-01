@@ -6,9 +6,13 @@ import GetQuiz from "./routes/GetQuiz";
 import Result from "./routes/Result";
 import { useAuthContext } from "./hooks/authContext";
 import AnswerQuiz from "./routes/AnswerQuiz";
+import Dashboard from "./routes/Dashboard";
+import Navbar from "./components/Navbar";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
+  const { state: auth } = isAuthenticated;
+
   return (
     <BrowserRouter>
       <main className="relative mx-auto max-w-[92rem]">
@@ -17,25 +21,29 @@ function App() {
           alt="background"
           className="absolute -z-10 h-screen w-full object-cover opacity-10"
         />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
             path="/auth"
-            element={!isAuthenticated ? <Auth /> : <Navigate to="/" />}
+            element={!auth ? <Auth /> : <Navigate to="/" />}
           />
           <Route
             path="/quiz"
-            element={isAuthenticated ? <GetQuiz /> : <Navigate to="/auth" />}
+            element={auth ? <GetQuiz /> : <Navigate to="/auth" />}
           />
           <Route
             path="/answerQuiz"
-            element={isAuthenticated ? <AnswerQuiz /> : <Navigate to="/auth" />}
+            element={auth ? <AnswerQuiz /> : <Navigate to="/auth" />}
           />
-          {/* <Route
+          <Route
             path="/results"
-            element={isAuthenticated ? <Result /> : <Navigate to="/auth" />}
-          /> */}
-          <Route path="/results" element={<Result />} />
+            element={auth ? <Result /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/dashboard"
+            element={auth ? <Dashboard /> : <Navigate to="/auth" />}
+          />
         </Routes>
       </main>
     </BrowserRouter>

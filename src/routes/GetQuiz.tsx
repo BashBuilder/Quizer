@@ -1,5 +1,4 @@
 import { z } from "zod";
-import Navbar from "../components/Navbar";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -7,6 +6,13 @@ import { quizCategories } from "../data/data";
 import { useQuizContext } from "@/hooks/quizContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function GetQuiz() {
   const { getQuiz, formState, quiz } = useQuizContext();
@@ -41,15 +47,15 @@ export default function GetQuiz() {
   }, [loading]);
 
   return (
-    <div className=" relative h-screen min-h-[600px] ">
+    <div className=" relative min-h-[600px]  ">
       <img
         src="assets/bg2.png"
         alt="background"
         className="absolute -z-10 h-full w-full bg-cover opacity-10"
       />
-      <Navbar />
-      <section className="h-[80%] pt-4 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
+      <section className=" min-h-[600px] pt-10  md:grid md:grid-cols-12 md:px-10 md:py-8 ">
         {/* left container pencil */}
+
         <div className="col-span-6 hidden h-full items-center md:flex ">
           <img
             src="assets/pen.png"
@@ -66,9 +72,9 @@ export default function GetQuiz() {
             <h2 className="capitalize text-slate-700 ">setup quiz</h2>
             {/* amount */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="amount" className="font-semibold text-slate-500">
+              <p className="font-semibold text-slate-500">
                 Number of Questions
-              </label>
+              </p>
               <input
                 type="number"
                 id="amount"
@@ -81,55 +87,49 @@ export default function GetQuiz() {
             </div>
             {/* category */}
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="category"
-                className="font-semibold text-slate-500"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                className="rounded-md bg-red-50 p-2"
-                {...register("category")}
-              >
-                {Object.keys(quizCategories).map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+              <p className="font-semibold text-slate-500">Category</p>
+              <Select>
+                <SelectTrigger className="w-full bg-orange-50">
+                  <SelectValue placeholder="Select Question Category" />
+                </SelectTrigger>
+                <SelectContent className="max-h-60">
+                  {Object.keys(quizCategories).map((category, index) => (
+                    <SelectItem
+                      key={index}
+                      value={category}
+                      className="capitalize"
+                    >
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             {/* difficulty */}
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="difficulty"
-                className="font-semibold text-slate-500"
-              >
-                Select Difficulty
-              </label>
-              <select
-                className=" rounded-md bg-red-50 p-2 "
-                {...register("difficulty")}
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
+              <p className="font-semibold text-slate-500">Select Difficulty</p>
+              <Select>
+                <SelectTrigger className="bg-orange-50">
+                  <SelectValue placeholder="Choose a Difficulty Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="easy">Easy</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="hard">Hard</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="difficulty"
-                className="font-semibold text-slate-500"
-              >
-                Exam Type
-              </label>
-              <select
-                className=" rounded-md bg-red-50 p-2 "
-                {...register("type")}
-              >
-                <option value="multiple">Multiple</option>
-                <option value="boolean">True or False</option>
-              </select>
+              <p className="font-semibold text-slate-500">Exam Type</p>
+              <Select>
+                <SelectTrigger className="bg-red-50">
+                  <SelectValue placeholder="Choose a Difficulty Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="multiple">Multiple</SelectItem>
+                  <SelectItem value="boolean">True or False</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {(errors.amount ||

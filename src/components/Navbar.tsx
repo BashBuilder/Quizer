@@ -51,7 +51,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                to="/"
+                to="/dashboard"
                 className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
               >
                 Dashboard

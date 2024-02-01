@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/authContext";
 
@@ -7,8 +6,7 @@ function Home() {
   const { name }: { name?: string } = user || {};
 
   return (
-    <div className=" relative h-screen min-h-[600px]">
-      <Navbar />
+    <div className=" relative  min-h-[600px]">
       <section className="h-[80%] items-center justify-items-center pt-12 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
         <div className="flex flex-col gap-10 md:col-span-6 md:text-left ">
           {isAuthenticated ? (

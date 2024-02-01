@@ -15,5 +15,8 @@ export interface AuthContextProps {
   signup: (username: string, email: string, password: string) => void;
   signupState: FormState;
   logout: () => void;
-  isAuthenticated: string;
+  isAuthenticated: {
+    state: string;
+    loading: boolean;
+  };
 }

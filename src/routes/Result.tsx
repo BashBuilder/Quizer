@@ -6,9 +6,6 @@ export default function Result() {
   const { result } = useQuizContext();
   const navigate = useNavigate();
 
-  const handleNavigation = () => {
-    console.log("handleNavigation");
-  };
   return (
     <div>
       <Navbar />
