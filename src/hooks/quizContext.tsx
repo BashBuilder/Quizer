@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useAuthContext } from "./authContext";
 import { FormState, Quiz, QuizContextProps, Result } from "@/data/quizTypes";
 import { initialQuizState, initialResultState } from "@/data/data";

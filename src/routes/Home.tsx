@@ -8,11 +8,6 @@ function Home() {
 
   return (
     <div className=" relative h-screen min-h-[600px]">
-      <img
-        src="assets/bg.png"
-        alt="background"
-        className="absolute -z-10 h-full w-full bg-contain opacity-5"
-      />
       <Navbar />
       <section className="h-[80%] items-center justify-items-center pt-12 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
         <div className="flex flex-col gap-10 md:col-span-6 md:text-left ">

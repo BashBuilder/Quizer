@@ -78,7 +78,7 @@
     @apply cursor-default;
   }
   button {
-    @apply rounded-md px-4 py-2;
+    @apply rounded-md px-4 py-2 hover:opacity-95 hover:shadow-lg;
   }
   section {
     @apply px-4 md:px-16 xl:px-32;

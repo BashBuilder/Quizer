@@ -3,6 +3,7 @@ import { initialQuizState } from "@/data/data";
 import { Quiz } from "@/data/quizTypes";
 import { useQuizContext } from "@/hooks/quizContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AnswerQuiz() {
   const [quizIndex, setQuizIndex] = useState<number>(0);
@@ -11,6 +12,9 @@ export default function AnswerQuiz() {
   const { quiz } = useQuizContext();
   const { setOptions, result, submitQuiz } = useQuizContext();
   const { answers, isubmitted, correctAnswer } = result;
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     setQuestion(quiz[quizIndex]);
     // eslint-disable-next-line
@@ -28,15 +32,24 @@ export default function AnswerQuiz() {
   const handleNextQuestion = (num: number) =>
     setQuizIndex((prev) => prev + num);
 
+  const handleSubmitQuiz = () => {
+    submitQuiz();
+    navigate("/result");
+  };
+
   return (
     <div>
       <Navbar />
       <section className="flex min-h-[600px] flex-col items-center justify-center gap-6 ">
         {!isubmitted && (
-          <button className="bg-orange-600 text-lg font-semibold text-white hover:opacity-90 hover:shadow-md">
+          <button
+            className="bg-orange-600 text-lg font-semibold text-white hover:opacity-90 hover:shadow-md"
+            onSubmit={handleSubmitQuiz}
+          >
             Submit
           </button>
         )}
+        {/* Display questions */}
         <article className=" mx-auto flex min-h-96 w-[90vw] max-w-5xl flex-col gap-8 rounded-3xl bg-orange-100 p-4  shadow-2xl md:px-20 md:py-10 ">
           <div className="flex justify-center gap-2 text-center">
             <p className="text-xl "> {quizIndex + 1}. </p>
@@ -46,6 +59,7 @@ export default function AnswerQuiz() {
             />
           </div>
 
+          {/* handle options state */}
           <div className="mx-auto mt-4 flex w-4/5 flex-col gap-4">
             {opt.map((option, index) => {
               const currentOption = answers.filter(

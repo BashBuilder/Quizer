@@ -10,8 +10,13 @@ import AnswerQuiz from "./routes/AnswerQuiz";
 function App() {
   const { isAuthenticated } = useAuthContext();
   return (
-    <main className="mx-auto max-w-[92rem]">
-      <BrowserRouter>
+    <BrowserRouter>
+      <main className="relative mx-auto max-w-[92rem]">
+        <img
+          src="assets/bg.png"
+          alt="background"
+          className="absolute -z-10 h-screen w-full object-cover opacity-10"
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -26,13 +31,14 @@ function App() {
             path="/answerQuiz"
             element={isAuthenticated ? <AnswerQuiz /> : <Navigate to="/auth" />}
           />
-          <Route
-            path="/result"
+          {/* <Route
+            path="/results"
             element={isAuthenticated ? <Result /> : <Navigate to="/auth" />}
-          />
+          /> */}
+          <Route path="/results" element={<Result />} />
         </Routes>
-      </BrowserRouter>
-    </main>
+      </main>
+    </BrowserRouter>
   );
 }
 
