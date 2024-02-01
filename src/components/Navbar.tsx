@@ -12,24 +12,53 @@ export default function Navbar() {
       </div>
 
       <div className="flex  items-center gap-2 text-center md:justify-between md:gap-20">
-        <ul className="flex gap-2 md:gap-4">
-          <li>
-            <Link
-              to="/"
-              className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
-            >
-              How it works
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/"
-              className=" relative hidden px-1 py-2 text-center font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px]  after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:inline md:px-4 "
-            >
-              About Us
-            </Link>
-          </li>
-        </ul>
+        {!isAuthenticated ? (
+          <ul className="flex gap-2 md:gap-4">
+            <li>
+              <Link
+                to="/"
+                className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
+              >
+                How it works
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className=" relative hidden px-1 py-2 text-center font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px]  after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:inline md:px-4 "
+              >
+                About Us
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          <ul className="flex gap-2 md:gap-4">
+            <li>
+              <Link
+                to="/"
+                className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
+              >
+                Dashboard
+              </Link>
+            </li>
+          </ul>
+        )}
 
         {isAuthenticated ? (
           <div className="flex items-center gap-2">
