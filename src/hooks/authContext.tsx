@@ -110,11 +110,13 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   useEffect(() => {
     setIsAuthenticated({ state: "", loading: true });
     const localUserJSON = localStorage.getItem("quizerUser");
+    let localUser: User;
     if (localUserJSON) {
-      const localUser: User = JSON.parse(localUserJSON);
+      localUser = JSON.parse(localUserJSON);
       setUser(localUser);
-      setIsAuthenticated({ state: localUser.token, loading: false });
+      setIsAuthenticated((prev) => ({ ...prev, state: localUser.token }));
     }
+    setIsAuthenticated((prev) => ({ ...prev, loading: false }));
   }, []);
 
   const contextValue: AuthContextProps = {

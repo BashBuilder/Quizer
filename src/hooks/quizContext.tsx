@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./authContext";
-import { FormState, Quiz, QuizContextProps, Result } from "@/data/quizTypes";
+import {
+  DatbaseQuizType,
+  FormState,
+  Quiz,
+  QuizContextProps,
+  QuizResultTypes,
+  Result,
+} from "@/data/quizTypes";
 import { initialQuizState, initialResultState } from "@/data/data";
 import { ProviderChildrenProps } from "@/data/authTypes";
 
@@ -10,6 +17,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const { user } = useAuthContext();
   const [quiz, setQuiz] = useState<Quiz[]>([initialQuizState]);
   const [result, setResult] = useState<Result>(initialResultState);
+  const [databaseQuiz, setDatabaseQuiz] = useState<DatbaseQuizType[]>([]);
   const [formState, setFormState] = useState<FormState>({
     loading: false,
     error: "",
@@ -118,12 +126,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   const postResult = async () => {
     try {
-      const quizResult: {
-        category: string;
-        score: number;
-        totalQuestions: number;
-        questions: Quiz[];
-      } = {
+      const quizResult: QuizResultTypes = {
         category: result.questionsAnswered[0].category,
         score: result.score,
         totalQuestions: result.questionsAnswered.length,
@@ -147,13 +150,32 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
+  const getAllQuestions = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_USER_GETALLQUIZ, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await response.json();
+      setDatabaseQuiz(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     setIsQuizLoading(true);
     const quizJson = localStorage.getItem("quizerQuiz");
     if (quizJson) {
       setQuiz(JSON.parse(quizJson));
     }
+    getAllQuestions();
     setIsQuizLoading(false);
+    // eslint-disable-next-line
   }, []);
 
   const contextValue: QuizContextProps = {
@@ -163,7 +185,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     result,
     setOptions,
     submitQuiz,
-    postResult,
+    databaseQuiz,
   };
 
   return (

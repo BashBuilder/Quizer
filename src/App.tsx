@@ -11,7 +11,9 @@ import Navbar from "./components/Navbar";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
-  const { state: auth } = isAuthenticated;
+  const { state } = isAuthenticated;
+
+  const auth = state !== "";
 
   return (
     <BrowserRouter>

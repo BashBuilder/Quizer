@@ -10,7 +10,7 @@ export interface QuizContextProps {
   result: Result;
   setOptions: (number: number, answer: string) => void;
   submitQuiz: () => void;
-  postResult: () => void;
+  databaseQuiz: DatbaseQuizType[];
 }
 export interface FormState {
   error: string;
@@ -38,4 +38,15 @@ export interface Result {
   questionsFailed: number;
   isubmitted: boolean;
   questionsAnswered: Quiz[];
+}
+export interface QuizResultTypes {
+  category: string;
+  score: number;
+  totalQuestions: number;
+  questions: Quiz[];
+}
+
+export interface DatbaseQuizType {
+  _id: string;
+  quiz: QuizResultTypes;
 }

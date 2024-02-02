@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/authContext";
 
 function Home() {
-  const { isAuthenticated, user } = useAuthContext();
-  const { name }: { name?: string } = user || {};
+  const { isAuthenticated } = useAuthContext();
+  // const { name }: { name?: string } = user || {};
 
   return (
     <div className=" relative  min-h-[600px]">
@@ -11,7 +11,7 @@ function Home() {
         <div className="flex flex-col gap-10 md:col-span-6 md:text-left ">
           {isAuthenticated ? (
             <h1 className="text-center capitalize leading-[3.5rem] tracking-wider md:w-[25rem] md:text-left ">
-              Welcome back {name}
+              Welcome back
             </h1>
           ) : (
             <h1 className="text-center capitalize leading-[3.5rem] tracking-wider md:w-[25rem] md:text-left ">
