@@ -8,19 +8,11 @@ import { useAuthContext } from "./hooks/authContext";
 import AnswerQuiz from "./routes/AnswerQuiz";
 import Dashboard from "./routes/Dashboard";
 import Navbar from "./components/Navbar";
-// import { useQuizContext } from "./hooks/quizContext";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
-  // const { result } = useQuizContext();
   const { state } = isAuthenticated;
-  // const isAuthRoute = window.location.pathname === "/auth";
   const auth = state !== "";
-  // const isNavbarShown = !result.isQuizStarted || isAuthRoute;
-
-  // console.log("rounte test", isAuthRoute);
-  // console.log(isNavbarShown);
-
   return (
     <BrowserRouter>
       <main className="relative mx-auto max-w-[92rem]">
