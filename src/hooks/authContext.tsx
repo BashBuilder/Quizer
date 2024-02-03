@@ -51,8 +51,9 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         setLoginState((prevState) => ({ ...prevState, error: data.error }));
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      setUser({ name: data.email, token: data.token });
-      localStorage.setItem("quizerUser", JSON.stringify(data));
+      const userData = { name: data.username, token: data.token };
+      setUser(userData);
+      localStorage.setItem("quizerUser", JSON.stringify(userData));
       setIsAuthenticated(data.token);
     } catch (error) {
       console.error(error);

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 
 export default function GetQuiz() {
-  const { getQuiz, formState, quiz } = useQuizContext();
+  const { getQuiz, formState, quiz, result } = useQuizContext();
   const { loading, error } = formState;
   const navigate = useNavigate();
 
@@ -46,7 +46,9 @@ export default function GetQuiz() {
 
   // navigate appropriately when question is submitted
   useEffect(() => {
-    !loading && quiz?.length > 1 ? navigate("/answerQuiz") : navigate("/quiz");
+    !loading && result.isQuizStarted && quiz?.length > 1
+      ? navigate("/answerQuiz")
+      : navigate("/quiz");
     // eslint-disable-next-line
   }, [loading]);
 

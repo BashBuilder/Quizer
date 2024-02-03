@@ -23,6 +23,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     error: "",
   });
   const [isQuizLoading, setIsQuizLoading] = useState(true);
+  const [isFetchingDbQuiz, setIsFetchingDbQuiz] = useState(false);
 
   const getQuiz = async (
     amount: string | number,
@@ -63,11 +64,14 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
           ...prev,
           error: "No Questions Available, try again",
         }));
-      setResult((prev) => ({
-        ...prev,
+      const initialQuizResult: Result = {
+        ...result,
         isubmitted: false,
+        isQuizStarted: true,
         questionsAnswered: data.results,
-      }));
+      };
+      setResult(initialQuizResult);
+      localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
     } catch (error) {
       console.error(error);
@@ -76,22 +80,45 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
+  const handleRetakeQuiz = (_id: string) => {
+    setFormState({ error: "", loading: true });
+    const retakeQuiz = databaseQuiz.filter((quiz) => quiz._id === _id)[0]
+      .questions;
+    setQuiz(retakeQuiz);
+    const initialQuizResult: Result = {
+      ...result,
+      isubmitted: false,
+      isQuizStarted: true,
+      questionsAnswered: retakeQuiz,
+    };
+    setResult(initialQuizResult);
+    localStorage.setItem("quizerQuiz", JSON.stringify(retakeQuiz));
+    localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
+    setFormState((prev) => ({ ...prev, loading: false }));
+  };
+
   const setOptions = (number: number, answer: string) => {
-    setResult((prev) => {
-      // Check if an answer with the same number already exists
-      const existingAnswerIndex = prev.answers.findIndex(
-        (item) => item.number === number,
-      );
-      if (existingAnswerIndex !== -1) {
-        // If the answer with the same number exists, update it
-        const updatedAnswers = [...prev.answers];
-        updatedAnswers[existingAnswerIndex] = { number, answer };
-        return { ...prev, answers: updatedAnswers };
-      } else {
-        // If the answer with the same number doesn't exist, add a new one
-        return { ...prev, answers: [...prev.answers, { number, answer }] };
-      }
-    });
+    let currentResult: Result;
+    // Check if an answer with the same number already exists
+    const existingAnswerIndex = result.answers.findIndex(
+      (item) => item.number === number,
+    );
+    if (existingAnswerIndex !== -1) {
+      // If the answer with the same number exists, update it
+      const updatedAnswers = [...result.answers];
+      updatedAnswers[existingAnswerIndex] = { number, answer };
+      currentResult = { ...result, answers: updatedAnswers };
+      setResult(currentResult);
+      localStorage.setItem("quizResults", JSON.stringify(currentResult));
+    } else {
+      // If the answer with the same number doesn't exist, add a new one
+      currentResult = {
+        ...result,
+        answers: [...result.answers, { number, answer }],
+      };
+      setResult(currentResult);
+      localStorage.setItem("quizResults", JSON.stringify(currentResult));
+    }
   };
 
   const submitQuiz = () => {
@@ -115,6 +142,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         ...prev,
         score: count,
         isubmitted: true,
+        isQuizStarted: false,
         correctAnswer,
       }));
       postResult();
@@ -140,11 +168,9 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      const data = await response.json();
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -152,6 +178,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   const getAllQuestions = async () => {
     try {
+      setIsFetchingDbQuiz(true);
       const response = await fetch(import.meta.env.VITE_USER_GETALLQUIZ, {
         method: "GET",
         headers: {
@@ -160,18 +187,34 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         },
       });
       const data = await response.json();
+      if (!response.ok) {
+        setDatabaseQuiz([]);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
       setDatabaseQuiz(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsFetchingDbQuiz(false);
     }
   };
 
   useEffect(() => {
     setIsQuizLoading(true);
     const quizJson = localStorage.getItem("quizerQuiz");
+    const resultJson = localStorage.getItem("quizResults");
     if (quizJson) {
-      setQuiz(JSON.parse(quizJson));
+      const localQuiz = JSON.parse(quizJson);
+      setQuiz(localQuiz);
+      setResult((prev) => ({
+        ...prev,
+        isubmitted: false,
+        questionsAnswered: localQuiz,
+      }));
+    }
+    if (resultJson) {
+      const localResult = JSON.parse(resultJson);
+      setResult(localResult);
     }
     getAllQuestions();
     setIsQuizLoading(false);
@@ -186,6 +229,8 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     setOptions,
     submitQuiz,
     databaseQuiz,
+    isFetchingDbQuiz,
+    handleRetakeQuiz,
   };
 
   return (

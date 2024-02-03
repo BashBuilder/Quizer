@@ -32,12 +32,19 @@ export const initialResultState: Result = {
   score: 0,
   answers: [
     {
-      number: 1,
+      number: 0,
+      answer: "",
+    },
+  ],
+  correctAnswer: [
+    {
+      number: 0,
       answer: "",
     },
   ],
   questionAttempts: 0,
   questionsFailed: 0,
   isubmitted: true,
+  isQuizStarted: false,
   questionsAnswered: [initialQuizState],
 };

@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/authContext";
+import { useQuizContext } from "@/hooks/quizContext";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthContext();
+  const { result } = useQuizContext();
   const { name }: { name?: string } = user || {};
+  const { isQuizStarted } = result;
+  const isAuthRoute = window.location.pathname === "/auth";
+
+  console.log(user);
 
   return (
-    <nav className="flex items-center justify-between gap-4 bg-background px-4 py-6 shadow-xl md:px-16  ">
+    <nav
+      className={` items-center justify-between gap-4 bg-background px-4 py-6 shadow-xl md:px-16 ${isQuizStarted || isAuthRoute ? "hidden" : "flex"} `}
+    >
       <div>
         <h2>Quizer</h2>
       </div>

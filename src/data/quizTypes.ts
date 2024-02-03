@@ -11,6 +11,8 @@ export interface QuizContextProps {
   setOptions: (number: number, answer: string) => void;
   submitQuiz: () => void;
   databaseQuiz: DatbaseQuizType[];
+  isFetchingDbQuiz: boolean;
+  handleRetakeQuiz: (_id: string) => void;
 }
 export interface FormState {
   error: string;
@@ -37,6 +39,7 @@ export interface Result {
   questionAttempts: number;
   questionsFailed: number;
   isubmitted: boolean;
+  isQuizStarted: boolean;
   questionsAnswered: Quiz[];
 }
 export interface QuizResultTypes {
@@ -48,5 +51,8 @@ export interface QuizResultTypes {
 
 export interface DatbaseQuizType {
   _id: string;
-  quiz: QuizResultTypes;
+  category: string;
+  score: number;
+  totalQuestions: number;
+  questions: Quiz[];
 }
