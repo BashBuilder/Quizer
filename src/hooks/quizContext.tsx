@@ -44,11 +44,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       });
       const data = await response.json();
       if (!response.ok) {
-        if (
-          data.error.includes(
-            "getaddrinfo ENOTFOUND ac-am0iexc-shard-00-00.hd8622b.mongodb.net",
-          )
-        ) {
+        if (data.error.includes("getaddrinfo ENOTFOUND ac-am0iexc")) {
           setFormState((prev) => ({
             ...prev,
             error: "Please check your connection",
@@ -59,11 +55,13 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       setQuiz(data.results);
-      data.results.length === 0 &&
+      if (data.results.length === 0) {
         setFormState((prev) => ({
           ...prev,
           error: "No Questions Available, try again",
         }));
+        return;
+      }
       const initialQuizResult: Result = {
         ...result,
         isubmitted: false,

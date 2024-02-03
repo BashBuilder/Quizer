@@ -8,11 +8,12 @@ import { useAuthContext } from "./hooks/authContext";
 import AnswerQuiz from "./routes/AnswerQuiz";
 import Dashboard from "./routes/Dashboard";
 import Navbar from "./components/Navbar";
+import How from "./routes/How";
+import About from "./routes/About";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
-  const { state } = isAuthenticated;
-  const auth = state !== "";
+  const { state: auth } = isAuthenticated;
   return (
     <BrowserRouter>
       <main className="relative mx-auto max-w-[92rem]">
@@ -25,6 +26,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/how" element={<How />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="/auth"
             element={!auth ? <Auth /> : <Navigate to="/" />}

@@ -10,9 +10,9 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<{
-    state: string;
+    state: boolean;
     loading: boolean;
-  }>({ state: "", loading: true });
+  }>({ state: false, loading: true });
   const [user, setUser] = useState<User>({ name: "", token: "" });
   const [loginState, setLoginState] = useState<FormState>({
     loading: false,
@@ -37,11 +37,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       });
       const data = await response.json();
       if (!response.ok) {
-        if (
-          data.error.includes(
-            "getaddrinfo ENOTFOUND ac-am0iexc-shard-00-00.hd8622b.mongodb.net",
-          )
-        ) {
+        if (data.error.includes("getaddrinfo ENOTFOUND ac-am0iexc")) {
           setLoginState((prevState) => ({
             ...prevState,
             error: "Please check your connection",
@@ -54,7 +50,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       const userData = { name: data.username, token: data.token };
       setUser(userData);
       localStorage.setItem("quizerUser", JSON.stringify(userData));
-      setIsAuthenticated(data.token);
+      setIsAuthenticated((prev) => ({ ...prev, state: data.token !== "" }));
     } catch (error) {
       console.error(error);
     } finally {
@@ -77,11 +73,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       });
       const data = await response.json();
       if (!response.ok) {
-        if (
-          data.error.includes(
-            "getaddrinfo ENOTFOUND ac-am0iexc-shard-00-00.hd8622b.mongodb.net",
-          )
-        ) {
+        if (data.error.includes("getaddrinfo ENOTFOUND ac-am0iexc")) {
           setSignupState((prevState) => ({
             ...prevState,
             error: "Please check your connection",
@@ -104,18 +96,20 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("quizerUser");
     setUser({ name: "", token: "" });
-    setIsAuthenticated({ state: "", loading: false });
+    setIsAuthenticated({ state: false, loading: false });
   };
-
   // authenticate on reload
   useEffect(() => {
-    setIsAuthenticated({ state: "", loading: true });
+    setIsAuthenticated({ state: false, loading: true });
     const localUserJSON = localStorage.getItem("quizerUser");
     let localUser: User;
     if (localUserJSON) {
       localUser = JSON.parse(localUserJSON);
       setUser(localUser);
-      setIsAuthenticated((prev) => ({ ...prev, state: localUser.token }));
+      setIsAuthenticated((prev) => ({
+        ...prev,
+        state: localUser.token !== "",
+      }));
     }
     setIsAuthenticated((prev) => ({ ...prev, loading: false }));
   }, []);

@@ -9,26 +9,26 @@ export default function Result() {
     navigate("/quiz");
     submitQuiz();
   };
-
   return (
     <div>
-      <section className="h-[80%] min-h-[600px] pt-4 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
-        <div className=" col-span-6 mx-auto flex h-full min-h-[500px] flex-col items-center justify-center gap-10  md:items-start ">
-          <h1>Weldone</h1>
+      <section className="h-[80%] min-h-[600px] px-6 pt-4 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
+        <div className=" col-span-6 mx-auto flex h-full min-h-[500px] flex-col  justify-center gap-6  md:items-start ">
+          {/* <h1 className="text-slate-700">Weldone</h1> */}
           <h3>Here is your performance</h3>
-          <p>Score : {result.score} </p>
-          <p>Attempted Questions {result.questionAttempts} </p>
-          <p>ToTal Questions {result.questionsAnswered.length} </p>
-
-          <div>
+          <h4 className="text-slate-800">Score : {result.score} </h4>
+          <h4 className="text-slate-800">
+            Attempted Questions: {result.answers.length}
+          </h4>
+          <h4 className="text-slate-800">
+            ToTal Questions : {result.questionsAnswered.length}
+          </h4>
+          <div className="flex gap-6">
             <button
               className="bg-primary font-semibold text-white"
               onClick={() => navigate("/answerQuiz")}
             >
               Review Questions
             </button>
-          </div>
-          <div>
             <button
               className="bg-primary font-semibold text-white"
               onClick={handleAnotherQuiz}

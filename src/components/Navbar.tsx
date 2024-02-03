@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/authContext";
 import { useQuizContext } from "@/hooks/quizContext";
 import {
@@ -9,13 +9,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { User } from "lucide-react";
 
 export default function Navbar() {
-  const { isAuthenticated, user } = useAuthContext();
+  const { isAuthenticated, user, logout } = useAuthContext();
   const { result } = useQuizContext();
+  const navigate = useNavigate();
   const { name }: { name?: string } = user || {};
   const { isQuizStarted } = result;
+  const { state: auth } = isAuthenticated;
   const isAuthRoute = window.location.pathname === "/auth";
+
+  const handleDropdownClick = (num: number) => {
+    switch (num) {
+      case 1:
+        navigate("/");
+        break;
+      case 2:
+        navigate("/dashboard");
+        break;
+      case 3:
+        logout();
+        navigate("/");
+        break;
+    }
+  };
 
   return (
     <nav
@@ -26,7 +44,7 @@ export default function Navbar() {
       </div>
 
       <div className="flex  items-center gap-2 text-center md:justify-between md:gap-20">
-        {!isAuthenticated ? (
+        {!auth ? (
           <ul className="flex gap-2 md:gap-4">
             <li>
               <Link
@@ -38,7 +56,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                to="/"
+                to="/how"
                 className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
               >
                 How it works
@@ -46,7 +64,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                to="/"
+                to="/about"
                 className=" relative hidden px-1 py-2 text-center font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px]  after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:inline md:px-4 "
               >
                 About Us
@@ -74,25 +92,38 @@ export default function Navbar() {
           </ul>
         )}
 
-        {isAuthenticated ? (
+        {auth ? (
           <div className="flex items-center gap-2">
             <h6>Hello</h6>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 border-2 border-primary font-semibold text-primary transition-all duration-300 hover:bg-primary hover:text-white ">
-                <svg width="16" height="16" viewBox="0 0 26 33">
-                  <path
-                    d="M0.682597 27.9796C-0.446046 21.8498 3.92326 18.3172 6.49389 16.7082C1.37801 11.5609 3.71721 4.67861 6.49389 2.37838C9.72473 -0.298061 15.5078 -1.51387 19.2838 3.08405C23.9465 8.76179 21.2274 14.438 19.2838 16.7082C20.5378 17.8122 24.8486 20.6817 25.4807 26.58C26.2783 34.0218 2.0934 35.6419 0.682597 27.9796Z"
-                    fill="#FD4C00"
-                  />
-                </svg>
+              <DropdownMenuTrigger className=" flex items-center gap-1 border-2 border-primary font-semibold text-primary outline-none hover:shadow-none md:border-none md:px-0">
                 {name}
+                <User className="text-primar " size={20} />
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent className="md:hidden  ">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Home</DropdownMenuItem>
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem
+                  className="my-2"
+                  onClick={() => handleDropdownClick(1)}
+                >
+                  Home
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="my-2"
+                  onClick={() => handleDropdownClick(2)}
+                >
+                  Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="my-2"
+                  onClick={() => handleDropdownClick(3)}
+                >
+                  Logout
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
