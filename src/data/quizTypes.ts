@@ -43,6 +43,7 @@ export interface Result {
   questionsAnswered: Quiz[];
 }
 export interface QuizResultTypes {
+  username: string;
   category: string;
   score: number;
   totalQuestions: number;

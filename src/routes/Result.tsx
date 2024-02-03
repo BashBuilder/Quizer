@@ -11,18 +11,29 @@ export default function Result() {
   };
   return (
     <div>
-      <section className="h-[80%] min-h-[600px] px-6 pt-4 md:grid md:grid-cols-12  md:px-10 md:py-8 ">
-        <div className=" col-span-6 mx-auto flex h-full min-h-[500px] flex-col  justify-center gap-6  md:items-start ">
+      <section className="h-[80%] min-h-[600px] px-10 pt-4 md:grid md:grid-cols-12  md:px-20 md:py-8 ">
+        <div className=" col-span-6 mx-auto flex h-full min-h-[500px] flex-col  justify-center gap-10  md:items-start ">
+          <img
+            src="assets/res.png"
+            alt="result.png"
+            className="mx-auto my-4 max-w-96 md:hidden"
+          />
           {/* <h1 className="text-slate-700">Weldone</h1> */}
-          <h3>Here is your performance</h3>
-          <h4 className="text-slate-800">Score : {result.score} </h4>
-          <h4 className="text-slate-800">
-            Attempted Questions: {result.answers.length}
+          <h3 className="text-center md:text-left">Your Quiz Performance:</h3>
+          <h4 className="font-semibold text-slate-800">
+            🌟 Score: <span>{result.score}</span>
           </h4>
-          <h4 className="text-slate-800">
-            ToTal Questions : {result.questionsAnswered.length}
+          <h4 className="font-semibold text-slate-800">
+            🏆 Attempted Questions: <span>{result.answers.length}</span>
           </h4>
-          <div className="flex gap-6">
+          <h4 className="font-semibold text-slate-800">
+            📚ToTal Questions : <span>{result.questionsAnswered.length}</span>
+          </h4>
+          <p className="text-xl">
+            Explore more quizzes on Quizzer to continue expanding your
+            knowledge.
+          </p>
+          <div className="my-4 flex items-center justify-center gap-6">
             <button
               className="bg-primary font-semibold text-white"
               onClick={() => navigate("/answerQuiz")}

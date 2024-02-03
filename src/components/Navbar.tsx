@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/authContext";
 import { useQuizContext } from "@/hooks/quizContext";
 import {
@@ -10,15 +10,25 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { User } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuthContext();
-  const { result } = useQuizContext();
+  const { result, submitQuiz } = useQuizContext();
   const navigate = useNavigate();
   const { name }: { name?: string } = user || {};
   const { isQuizStarted } = result;
   const { state: auth } = isAuthenticated;
   const isAuthRoute = window.location.pathname === "/auth";
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== "/answerQuiz") {
+      submitQuiz();
+    }
+    // eslint-disable-next-line
+  }, [location.pathname]);
 
   const handleDropdownClick = (num: number) => {
     switch (num) {

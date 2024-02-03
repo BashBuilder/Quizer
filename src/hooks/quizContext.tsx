@@ -136,13 +136,15 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         }
         return acc;
       }, 0);
-      setResult((prev) => ({
-        ...prev,
+      const submittedResult: Result = {
+        ...result,
         score: count,
         isubmitted: true,
         isQuizStarted: false,
         correctAnswer,
-      }));
+      };
+      setResult(submittedResult);
+      localStorage.setItem("quizResults", JSON.stringify(submittedResult));
       postResult();
     } else {
       setResult((prev) => ({ ...prev, isubmitted: false }));
@@ -153,6 +155,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const postResult = async () => {
     try {
       const quizResult: QuizResultTypes = {
+        username: user.name,
         category: result.questionsAnswered[0].category,
         score: result.score,
         totalQuestions: result.questionsAnswered.length,
@@ -177,8 +180,10 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const getAllQuestions = async () => {
     try {
       setIsFetchingDbQuiz(true);
+      const username = { username: user.name };
       const response = await fetch(import.meta.env.VITE_USER_GETALLQUIZ, {
-        method: "GET",
+        method: "POST",
+        body: JSON.stringify(username),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,

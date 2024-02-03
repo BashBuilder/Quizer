@@ -1,16 +1,30 @@
+import { DatbaseQuizType } from "@/data/quizTypes";
 import { useQuizContext } from "@/hooks/quizContext";
 import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { databaseQuiz, isFetchingDbQuiz, handleRetakeQuiz, formState } =
     useQuizContext();
+  const [newQuiz, setNewQuiz] = useState<DatbaseQuizType[]>([]);
+  const [startingPageNumber, setStartingPageNumber] = useState(0);
+  const [endPageNumber, setEndPageNumber] = useState(4);
 
   const handleRetake = (_id: string) => {
     handleRetakeQuiz(_id);
     !formState.loading && navigate("/answerQuiz");
   };
+
+  const handleNextPage = (num: number) => {
+    setEndPageNumber((prev) => (prev += num));
+    setStartingPageNumber((prev) => (prev += num));
+  };
+
+  useEffect(() => {
+    setNewQuiz(databaseQuiz.slice(startingPageNumber, endPageNumber));
+  }, [databaseQuiz, startingPageNumber, endPageNumber]);
 
   return (
     <section className="  gap-2  pt-10 md:grid md:grid-cols-12 md:px-10 md:py-8 ">
@@ -39,7 +53,7 @@ export default function Dashboard() {
         ) : (
           <div className=" flex flex-col justify-center gap-10 md:flex">
             <h2 className="text-slate-800">Previous Performances</h2>
-            {databaseQuiz?.map((quiz, index) => (
+            {newQuiz?.map((quiz, index) => (
               <div key={index} className="flex w-full flex-col gap-4">
                 <div className="flex  justify-between gap-3">
                   <div className="flex gap-2">
@@ -69,10 +83,21 @@ export default function Dashboard() {
               </div>
             ))}
             <div className="flex items-center justify-between">
-              <button className="bg-orange-400">Previous</button>
-
+              <button
+                className="bg-orange-400 disabled:opacity-35"
+                onClick={() => handleNextPage(-4)}
+                disabled={startingPageNumber === 0}
+              >
+                Previous
+              </button>
               {/* Add Pagination Here */}
-              <button className="bg-orange-400">Next</button>
+              <button
+                className="bg-orange-400 disabled:opacity-30"
+                onClick={() => handleNextPage(4)}
+                disabled={endPageNumber + 1 > databaseQuiz.length}
+              >
+                Next
+              </button>
             </div>
           </div>
         )}

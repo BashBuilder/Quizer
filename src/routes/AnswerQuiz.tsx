@@ -3,7 +3,7 @@ import { initialQuizState } from "@/data/data";
 import { Quiz } from "@/data/quizTypes";
 import { useQuizContext } from "@/hooks/quizContext";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function AnswerQuiz() {
   const [quizIndex, setQuizIndex] = useState<number>(0);
@@ -11,10 +11,11 @@ export default function AnswerQuiz() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [opt, setOpt] = useState<string[]>([]);
   const { quiz } = useQuizContext();
-  const { setOptions, result } = useQuizContext();
+  const { setOptions, result, submitQuiz } = useQuizContext();
   const { answers, isubmitted, correctAnswer, isQuizStarted } = result;
 
   const navigate = useNavigate();
+  const location = useLocation();
   // Set questions base on the current question index
   useEffect(() => {
     setQuestion(quiz[quizIndex]);
@@ -38,17 +39,25 @@ export default function AnswerQuiz() {
   const handleSubmit = () => {
     !isubmitted ? setIsModalOpen(true) : navigate("/");
   };
+  // handle submission when route changes
+  useEffect(() => {
+    if (location.pathname !== "/answerQuiz") {
+      console.log("submitQuiz");
+      submitQuiz();
+    }
+    // eslint-disable-next-line
+  }, [location.pathname]);
 
   return (
     <section
-      className={`relative flex min-h-[600px] flex-col items-center justify-center gap-6 ${isQuizStarted && "h-screen"} `}
+      className={`relative flex flex-col items-center justify-center gap-6 ${isQuizStarted && " h-[80vh] md:h-screen"} `}
     >
       {/* Modals */}
       <SubmitModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <img
         src="assets/quest2.png"
         alt="brain"
-        className="absolute top-0 w-1/2 max-w-80  md:left-0 md:w-full"
+        className={`top-0 w-1/2 max-w-80 md:absolute ${isQuizStarted ? " inline md:absolute" : "hidden"}  md:w-full" md:left-0`}
       />
       {/* ----------------- */}
       <button
