@@ -63,15 +63,17 @@ export default function Dashboard() {
               <div key={index} className="flex w-full flex-col gap-4">
                 <div className="flex  justify-between gap-3">
                   <div className="flex gap-2">
-                    <h4>{startingPageNumber + index + 1}.</h4>
+                    <h4 className="text-lg">
+                      {startingPageNumber + index + 1}.
+                    </h4>
                     <p
-                      className="text-left text-2xl"
+                      className="text-left text-lg md:text-2xl"
                       dangerouslySetInnerHTML={{ __html: quiz.category }}
                     />
                   </div>
                   <div className="flex justify-between gap-10">
-                    <h4 className="t">
-                      {(quiz.score / quiz.totalQuestions) * 100}%
+                    <h4 className="text-lg">
+                      {(quiz.score / quiz.questions.length) * 100}%
                     </h4>
                     <button
                       className=" min-w-32 bg-primary font-semibold text-white "

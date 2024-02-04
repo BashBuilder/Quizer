@@ -58,9 +58,11 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         ...initialResultState,
         isubmitted: false,
         isQuizStarted: true,
+        answers: [],
       };
 
       setResult(initialQuizResult);
+      setDatabaseResult(undefined);
       localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
     } catch (error) {
@@ -72,6 +74,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   // Take the quiz again
   const handleRetakeQuiz = (_id: string) => {
+    setDatabaseResult(undefined);
     setFormState({ error: "", loading: true });
     const retakeQuiz = databaseQuiz.filter((quiz) => quiz._id === _id)[0]
       .questions;
@@ -81,8 +84,6 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       isubmitted: false,
       isQuizStarted: true,
       answers: [],
-      correctAnswer: [],
-      questionsAnswered: retakeQuiz,
     };
     setResult(initialQuizResult);
     localStorage.setItem("quizerQuiz", JSON.stringify(retakeQuiz));
@@ -116,6 +117,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   const submitQuiz = async () => {
     try {
+      setFormState({ error: "", loading: true });
       setResult((prev) => ({ ...prev, isSubmitting: true }));
       const submittedResult: Result = {
         ...result,
@@ -124,6 +126,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       };
       setResult(submittedResult);
       localStorage.setItem("quizResults", JSON.stringify(submittedResult));
+
       const quizResult: QuizSubmitTypes = {
         username: user.name,
         answers: result.answers,
@@ -138,13 +141,12 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         console.log(data.error);
         return;
       }
-      console.log(data);
       setDatabaseResult(data);
-      setResult((prev) => ({ ...prev, isubmitted: true }));
     } catch (error) {
       console.log(error);
     } finally {
       setResult((prev) => ({ ...prev, isSubmitting: false }));
+      setFormState((prev) => ({ ...prev, loading: false }));
     }
   };
 

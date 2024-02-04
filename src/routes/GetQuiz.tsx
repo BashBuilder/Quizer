@@ -53,22 +53,17 @@ export default function GetQuiz() {
   }, [loading]);
 
   return (
-    <section className="md:grid md:grid-cols-12 md:px-10 md:py-8 ">
+    <section>
       {/* left container pencil */}
-      <div className="col-span-6 hidden h-full items-center md:flex ">
+      <div className="col-span-6 items-center py-4 md:flex ">
         <img
           src="assets/pen.png"
           alt="pencils"
-          className="mx-auto my-auto max-w-[25rem] animate-spin duration-50000 "
+          className="mx-auto my-auto w-4/5 max-w-[25rem] animate-spin  duration-50000 md:w-full "
         />
       </div>
       {/* right form container  */}
-      <div className="flex h-[80vh] flex-col items-center justify-center gap-10 md:col-span-6  md:h-fit md:py-6 md:text-left ">
-        <img
-          src="assets/ques.png"
-          className="w-3/4 max-w-96 md:hidden"
-          alt="question illustration"
-        />
+      <div className="flex flex-col items-center justify-center gap-10 md:col-span-6  md:h-fit md:py-6 md:text-left ">
         <form
           onSubmit={handleSubmit(submitQuiz)}
           className=" flex w-4/5 max-w-[25rem] flex-col gap-4 rounded-xl bg-white   "

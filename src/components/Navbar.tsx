@@ -23,13 +23,11 @@ export default function Navbar() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname !== "/answerQuiz" && result.isQuizStarted) {
+    if (location.pathname !== "/answerQuiz" && isQuizStarted) {
       submitQuiz();
     }
     // eslint-disable-next-line
   }, [location.pathname]);
-
-  // console.log(result);
 
   const handleDropdownClick = (num: number) => {
     switch (num) {

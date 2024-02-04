@@ -3,7 +3,7 @@ import { initialQuizState } from "@/data/data";
 import { Quiz } from "@/data/quizTypes";
 import { useQuizContext } from "@/hooks/quizContext";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function AnswerQuiz() {
   const [quizIndex, setQuizIndex] = useState<number>(0);
@@ -11,11 +11,10 @@ export default function AnswerQuiz() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [opt, setOpt] = useState<string[]>([]);
   const { quiz } = useQuizContext();
-  const { setOptions, result, submitQuiz, databaseResult } = useQuizContext();
+  const { setOptions, result, databaseResult } = useQuizContext();
   const { answers, isubmitted, isQuizStarted } = result;
 
   const navigate = useNavigate();
-  const location = useLocation();
   // Set questions base on the current question index
   useEffect(() => {
     setQuestion(quiz[quizIndex]);
@@ -39,14 +38,6 @@ export default function AnswerQuiz() {
   const handleSubmit = () => {
     !isubmitted ? setIsModalOpen(true) : navigate("/");
   };
-  // handle submission when route changes
-  useEffect(() => {
-    if (location.pathname !== "/answerQuiz") {
-      console.log("submitQuiz");
-      submitQuiz();
-    }
-    // eslint-disable-next-line
-  }, [location.pathname]);
 
   return (
     <section

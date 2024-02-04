@@ -50,7 +50,6 @@ export interface DatbaseQuizType {
   _id: string;
   category: string;
   score: number;
-  totalQuestions: number;
   questions: Quiz[];
 }
 export interface DatabaseResult {
