@@ -66,6 +66,8 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         ...result,
         isubmitted: false,
         isQuizStarted: true,
+        answers: [],
+        correctAnswer: [],
         questionsAnswered: data.results,
       };
       setResult(initialQuizResult);
@@ -87,6 +89,8 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       ...result,
       isubmitted: false,
       isQuizStarted: true,
+      answers: [],
+      correctAnswer: [],
       questionsAnswered: retakeQuiz,
     };
     setResult(initialQuizResult);

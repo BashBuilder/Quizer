@@ -27,8 +27,8 @@ export default function Dashboard() {
   }, [databaseQuiz, startingPageNumber, endPageNumber]);
 
   return (
-    <section className="  gap-2  pt-10 md:grid md:grid-cols-12 md:px-10 md:py-8 ">
-      <div className="col-span-7 h-full min-h-[500px] flex-col justify-center gap-10 md:flex ">
+    <section className=" grid  grid-cols-1 gap-2 pt-10  md:grid-cols-12 md:px-10 md:py-8 ">
+      <div className="col-span-7 h-full flex-col justify-center gap-10 md:flex md:min-h-[500px] ">
         {isFetchingDbQuiz ? (
           <div className="mx-auto  flex h-full min-h-[500px] w-fit items-center justify-center">
             <div className=" rounded-md bg-primary p-4 ">
@@ -36,8 +36,11 @@ export default function Dashboard() {
             </div>
           </div>
         ) : databaseQuiz.length === 0 ? (
-          <div className=" flex flex-col justify-center gap-10 md:flex">
-            <h2>No Previous Performance</h2>
+          <div className=" flex min-h-[500px] flex-col justify-center gap-10 md:flex md:px-20 ">
+            <img src="assets/homeIcon.png" alt="" className="md:hidden" />
+            <h2 className="text-center md:text-left">
+              No Previous Performance
+            </h2>
             <p className=" relative mx-auto pl-4 text-slate-700 before:absolute before:-left-0 before:mr-4 before:h-full before:w-1 before:rounded-md before:bg-primary md:mx-0 ">
               Practise Some Questions
             </p>
@@ -51,13 +54,16 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className=" flex flex-col justify-center gap-10 md:flex">
-            <h2 className="text-slate-800">Previous Performances</h2>
+          <div className=" flex min-h-[400px] flex-col justify-between gap-10 md:flex">
+            <div className="flex items-center gap-2">
+              <img src="assets/quizzer.png" alt="logo" className="w-12" />
+              <h2 className=" text-slate-800">Performance</h2>
+            </div>
             {newQuiz?.map((quiz, index) => (
               <div key={index} className="flex w-full flex-col gap-4">
                 <div className="flex  justify-between gap-3">
                   <div className="flex gap-2">
-                    <h4>{index + 1}.</h4>
+                    <h4>{startingPageNumber + index + 1}.</h4>
                     <p
                       className="text-left text-2xl"
                       dangerouslySetInnerHTML={{ __html: quiz.category }}
@@ -102,13 +108,19 @@ export default function Dashboard() {
           </div>
         )}
       </div>
-      <div className="hidden min-h-full items-center justify-center md:col-span-5 md:flex md:text-left ">
-        {databaseQuiz.length === 0 ? (
-          <img src="assets/sec.png" alt="" />
-        ) : (
-          <img src="assets/sec.png" alt="" />
-        )}
-      </div>
+      {!isFetchingDbQuiz && (
+        <div className=" flex items-center justify-center md:col-span-5  ">
+          {databaseQuiz.length === 0 ? (
+            <img
+              src="assets/homeIcon.png"
+              alt="dash"
+              className="hidden md:inline"
+            />
+          ) : (
+            <img src="assets/sec.png" alt="dash" className="mx-auto w-full" />
+          )}
+        </div>
+      )}
     </section>
   );
 }

@@ -22,6 +22,8 @@ export default function AnswerQuiz() {
     // eslint-disable-next-line
   }, [quizIndex]);
 
+  console.log(result);
+
   useEffect(() => {
     // Sort options only once when the component mounts
     const allOptions: string[] = [
@@ -50,7 +52,7 @@ export default function AnswerQuiz() {
 
   return (
     <section
-      className={`relative flex flex-col items-center justify-center gap-6 ${isQuizStarted && " h-[80vh] md:h-screen"} `}
+      className={`min-[600]: relative flex flex-col items-center justify-center gap-6 ${isQuizStarted ? " h-[80vh] md:h-screen" : "h-[85vh]"} `}
     >
       {/* Modals */}
       <SubmitModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />

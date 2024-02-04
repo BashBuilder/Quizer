@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useEffect } from "react";
 
 export default function Navbar() {
@@ -20,15 +20,16 @@ export default function Navbar() {
   const { isQuizStarted } = result;
   const { state: auth } = isAuthenticated;
   const isAuthRoute = window.location.pathname === "/auth";
-
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname !== "/answerQuiz") {
+    if (location.pathname !== "/answerQuiz" && result.isQuizStarted) {
       submitQuiz();
     }
     // eslint-disable-next-line
   }, [location.pathname]);
+
+  // console.log(result);
 
   const handleDropdownClick = (num: number) => {
     switch (num) {
@@ -36,9 +37,12 @@ export default function Navbar() {
         navigate("/");
         break;
       case 2:
-        navigate("/dashboard");
+        navigate("/quiz");
         break;
       case 3:
+        navigate("/dashboard");
+        break;
+      case 4:
         logout();
         navigate("/");
         break;
@@ -49,7 +53,12 @@ export default function Navbar() {
     <nav
       className={` items-center justify-between gap-4 bg-background px-4 py-6 shadow-xl md:px-16 ${isQuizStarted || isAuthRoute ? "hidden" : "flex"} `}
     >
-      <div>
+      <div className="relative overflow-hidden ">
+        <img
+          src="assets/quizzer.png"
+          alt="logo"
+          className="absolute right-0 w-12"
+        />
         <h2>Quizer</h2>
       </div>
 
@@ -82,22 +91,38 @@ export default function Navbar() {
             </li>
           </ul>
         ) : (
-          <ul className="flex gap-2 md:gap-4">
+          <ul className="flex items-center gap-2 md:gap-4">
             <li>
               <Link
                 to="/"
-                className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
+                className={` relative hidden px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px]  after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:inline md:px-4 `}
               >
                 Home
               </Link>
             </li>
             <li>
               <Link
+                to="/quiz"
+                className={` relative hidden px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px]  after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:inline md:px-4`}
+              >
+                Quiz
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/dashboard"
-                className={` relative px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px] after:-translate-x-1/2  after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:px-4 ${isAuthenticated ? "hidden md:inline " : "inline"} `}
+                className={` relative hidden px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2 after:h-1 after:w-[0px]  after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:after:w-3/5 md:inline md:px-4 `}
               >
                 Dashboard
               </Link>
+            </li>
+            <li>
+              <button
+                className={` relative hidden items-center gap-2 px-1 py-2 font-semibold text-slate-600 transition-all after:absolute after:-bottom-0 after:left-1/2  after:h-1 after:w-[0px] after:-translate-x-1/2 after:rounded-md after:bg-primary after:duration-300 hover:shadow-none hover:after:w-3/5 md:inline-flex md:px-4 `}
+                onClick={() => handleDropdownClick(4)}
+              >
+                <span>Logout</span> <LogOut size={20} />
+              </button>
             </li>
           </ul>
         )}
@@ -110,7 +135,7 @@ export default function Navbar() {
                 {name}
                 <User className="text-primar " size={20} />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="md:hidden  ">
+              <DropdownMenuContent className="md:hidden">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -124,12 +149,19 @@ export default function Navbar() {
                   className="my-2"
                   onClick={() => handleDropdownClick(2)}
                 >
-                  Dashboard
+                  Quiz
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="my-2"
                   onClick={() => handleDropdownClick(3)}
+                >
+                  Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="my-2"
+                  onClick={() => handleDropdownClick(4)}
                 >
                   Logout
                 </DropdownMenuItem>

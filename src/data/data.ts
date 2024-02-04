@@ -32,13 +32,13 @@ export const initialResultState: Result = {
   score: 0,
   answers: [
     {
-      number: 0,
+      number: 1,
       answer: "",
     },
   ],
   correctAnswer: [
     {
-      number: 0,
+      number: 1,
       answer: "",
     },
   ],

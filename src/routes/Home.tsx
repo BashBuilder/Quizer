@@ -16,7 +16,9 @@ function Home() {
             <h5 className="font-semibold capitalize text-slate-700 ">
               Glad to see you again at Quizzer Ready for more quizzes and fun?
             </h5>
-            <p className="text-lg font-semibold italic">What's New For You</p>
+            <p className="text-lg font-semibold italic text-slate-700">
+              What's New For You
+            </p>
             <ul className="flex flex-col gap-2">
               <li>
                 <p className="w-fit rounded-md bg-orange-50 px-4 py-2 font-semibold text-slate-800">
@@ -38,7 +40,7 @@ function Home() {
             <h1 className="capitalize leading-[3.5rem] tracking-wider text-orange-700 md:text-left ">
               Welcome to Quizzer
             </h1>
-            <h5 className="capitalize text-slate-700 ">
+            <h5 className="font-semibold capitalize text-slate-700 ">
               Unlock the Power of Knowledge with Our Engaging Quizzes
             </h5>
             <ul className="flex flex-col gap-2">
@@ -78,11 +80,11 @@ function Home() {
           </Link>
         </div>
       </div>
-      <div className="col-span-12 col-start-7 flex items-center justify-center">
+      <div className="col-span-12 col-start-7 flex items-center justify-center py-8">
         {auth ? (
-          <img src="assets/sec.png" alt="welcome" className="w-full" />
+          <img src="assets/svg/question.svg" alt="welcome" className="" />
         ) : (
-          <img src="assets/homeIcon.png" alt="welcome" className="w-full" />
+          <img src="assets/svg/home.svg" alt="welcome" className="w-full" />
         )}
       </div>
     </section>
