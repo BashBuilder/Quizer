@@ -62,7 +62,6 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     try {
       setSignupState({ error: "", loading: true });
       const signupData = { email, password, username };
-      console.log(signupData);
       const response = await fetch(import.meta.env.VITE_SIGNUP_URI, {
         method: "POST",
         headers: {
@@ -83,9 +82,10 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         setSignupState((prevState) => ({ ...prevState, error: data.error }));
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      setUser({ name: data.email, token: data.token });
-      localStorage.setItem("quizerUser", JSON.stringify(data));
-      setIsAuthenticated(data.token);
+      const userData = { name: data.username, token: data.token };
+      setUser(userData);
+      localStorage.setItem("quizerUser", JSON.stringify(userData));
+      setIsAuthenticated((prev) => ({ ...prev, state: data.token !== "" }));
     } catch (error) {
       console.error(error);
     } finally {
