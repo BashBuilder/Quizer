@@ -12,7 +12,7 @@ export default function Login() {
         />
         <div className="relative h-full">
           {/* Login */}
-          <div
+          <article
             className={`absolute left-0 grid h-full w-full md:grid-cols-2 ${isLogin ? "z-30" : "z-10"}  `}
           >
             <div
@@ -27,9 +27,10 @@ export default function Login() {
               </button>
             </div>
             <LoginUser isLogin={isLogin} />
-          </div>
+          </article>
+
           {/* sign up */}
-          <div className="relative z-20 grid h-full gap-10 md:grid-cols-2 ">
+          <article className="relative z-20 grid h-full gap-10 md:grid-cols-2 ">
             <SignupUser isLogin={isLogin} />
             <div
               className={`flex flex-col items-center justify-center gap-4 delay-300 ${!isLogin ? "" : "pointer-events-none opacity-0"}`}
@@ -42,7 +43,7 @@ export default function Login() {
                 Sign In
               </button>
             </div>
-          </div>
+          </article>
         </div>
       </div>
     </section>

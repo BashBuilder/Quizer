@@ -11,11 +11,11 @@ interface LoginProps {
 export default function LoginUser({ isLogin }: LoginProps) {
   const { login, loginState } = useAuthContext();
   const { loading, error } = loginState;
+  // zod schema for form
   const loginSchema = z.object({
     email: z.string().min(1, { message: "Enter your email or username" }),
     password: z.string().min(1, { message: "Enter your password" }),
   });
-
   type LoginSchemaType = z.infer<typeof loginSchema>;
 
   const {

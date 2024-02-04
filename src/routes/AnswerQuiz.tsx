@@ -11,8 +11,8 @@ export default function AnswerQuiz() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [opt, setOpt] = useState<string[]>([]);
   const { quiz } = useQuizContext();
-  const { setOptions, result, submitQuiz } = useQuizContext();
-  const { answers, isubmitted, correctAnswer, isQuizStarted } = result;
+  const { setOptions, result, submitQuiz, databaseResult } = useQuizContext();
+  const { answers, isubmitted, isQuizStarted } = result;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,8 +21,6 @@ export default function AnswerQuiz() {
     setQuestion(quiz[quizIndex]);
     // eslint-disable-next-line
   }, [quizIndex]);
-
-  console.log(result);
 
   useEffect(() => {
     // Sort options only once when the component mounts
@@ -87,7 +85,8 @@ export default function AnswerQuiz() {
             )[0]?.answer;
             const isOption = currentOption === option;
             let isCorrectAnswer, correction;
-            if (isubmitted) {
+            if (isubmitted && databaseResult) {
+              const { correctAnswer } = databaseResult;
               const currentAns = correctAnswer?.filter(
                 (ans) => ans.number === quizIndex + 1,
               )[0]?.answer;

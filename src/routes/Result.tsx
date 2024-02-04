@@ -2,7 +2,7 @@ import { useQuizContext } from "@/hooks/quizContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Result() {
-  const { result, submitQuiz } = useQuizContext();
+  const { submitQuiz, databaseResult } = useQuizContext();
   const navigate = useNavigate();
 
   const handleAnotherQuiz = () => {
@@ -11,48 +11,62 @@ export default function Result() {
   };
   return (
     <div>
-      <section className="h-[80%] min-h-[600px] px-10 pt-4 md:grid md:grid-cols-12  md:px-20 md:py-8 ">
-        <div className=" col-span-6 mx-auto flex h-full min-h-[500px] flex-col  justify-center gap-10  md:items-start ">
-          <img
-            src="assets/svg/slider.svg"
-            alt="result.png"
-            className="mx-auto my-4 max-w-96 md:hidden"
-          />
-          {/* <h1 className="text-slate-700">Weldone</h1> */}
-          <h3 className="text-center md:text-left">Your Quiz Performance:</h3>
-          <h4 className="font-semibold text-slate-800">
-            🎌 Category: <span>{result.questionsAnswered[0].category}</span>
-          </h4>
-          <h4 className="font-semibold text-slate-800">
-            🌟 Score: <span>{result.score}</span>
-          </h4>
-          <h4 className="font-semibold text-slate-800">
-            🏆 Attempted Questions: <span>{result.answers.length}</span>
-          </h4>
-          <h4 className="font-semibold text-slate-800">
-            📚ToTal Questions : <span>{result.questionsAnswered.length}</span>
-          </h4>
-          <p className="text-xl">
-            Explore more quizzes on Quizzer to continue expanding your
-            knowledge.
-          </p>
-          <div className="my-4 flex items-center justify-center gap-6">
+      <section className="h-[80%] min-h-[600px] py-4">
+        {databaseResult ? (
+          <div className=" order-2 col-span-6 mx-auto flex h-full min-h-[500px] flex-col justify-center  gap-8  md:order-1 md:items-start">
+            <h3 className="text-center md:text-left">Your Quiz Performance:</h3>
+            <h4 className="flex items-center justify-between font-semibold text-slate-800 ">
+              <span> 🎌 Category: </span>
+              <span>{databaseResult.category}</span>
+            </h4>
+            <h4 className="flex items-center justify-between font-semibold text-slate-800 ">
+              <span> 🌟 Score: </span>
+              <span>{databaseResult.score}</span>
+            </h4>
+            <h4 className="flex items-center justify-between font-semibold text-slate-800 ">
+              <span>🏆 Attempted Questions:</span>
+              <span>{databaseResult.attempts}</span>
+            </h4>
+            <h4 className="flex items-center justify-between font-semibold text-slate-800 ">
+              <span>📚ToTal Questions : </span>
+              <span>{databaseResult.TotalQuestions}</span>
+            </h4>
+            <p className="text-xl">
+              Explore more quizzes on Quizzer to continue expanding your
+              knowledge.
+            </p>
+            <div className="my-4 flex items-center justify-center gap-6">
+              <button
+                className="bg-primary font-semibold text-white"
+                onClick={() => navigate("/answerQuiz")}
+              >
+                Review Questions
+              </button>
+              <button
+                className="bg-primary font-semibold text-white"
+                onClick={handleAnotherQuiz}
+              >
+                Take another Quiz
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="col-span-6 flex flex-col items-center justify-center gap-6">
+            <h3 className="text-center">No result Available</h3>
+            <p className="text-center text-xl">
+              Explore more quizzes on Quizzer to continue expanding your
+              knowledge.
+            </p>
             <button
               className="bg-primary font-semibold text-white"
-              onClick={() => navigate("/answerQuiz")}
+              onClick={() => navigate("/quiz")}
             >
-              Review Questions
-            </button>
-            <button
-              className="bg-primary font-semibold text-white"
-              onClick={handleAnotherQuiz}
-            >
-              Take another Quiz
+              Take Quiz
             </button>
           </div>
-        </div>
-        <div className="hidden min-h-full items-center justify-center md:col-span-6 md:flex md:text-left">
-          <img src="assets/svg/slider.svg" alt="img" />
+        )}
+        <div className=" order-1 flex items-center justify-center md:order-2 md:col-span-6 ">
+          <img src="assets/result.png" alt="img" />
         </div>
       </section>
     </div>

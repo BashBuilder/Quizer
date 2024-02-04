@@ -1,15 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./authContext";
 import {
+  DatabaseResult,
   DatbaseQuizType,
   FormState,
   Quiz,
   QuizContextProps,
-  QuizResultTypes,
+  QuizSubmitTypes,
   Result,
 } from "@/data/quizTypes";
 import { initialQuizState, initialResultState } from "@/data/data";
 import { ProviderChildrenProps } from "@/data/authTypes";
+import { postData } from "@/lib/PostRequests";
 
 const QuizContext = createContext<QuizContextProps | undefined>(undefined);
 
@@ -24,7 +26,8 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   });
   const [isQuizLoading, setIsQuizLoading] = useState(true);
   const [isFetchingDbQuiz, setIsFetchingDbQuiz] = useState(false);
-
+  const [databaseResult, setDatabaseResult] = useState<DatabaseResult>();
+  // Fetch the quiz from the api endpoint
   const getQuiz = async (
     amount: string | number,
     category: string,
@@ -34,27 +37,15 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     try {
       setFormState({ error: "", loading: true });
       const quizData = { amount, category, difficulty, type };
-      const response = await fetch(import.meta.env.VITE_USER_GETQUIZ, {
-        method: "POST",
-        body: JSON.stringify(quizData),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        if (data.error.includes("getaddrinfo ENOTFOUND ac-am0iexc")) {
-          setFormState((prev) => ({
-            ...prev,
-            error: "Please check your connection",
-          }));
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+      const data = await postData(
+        import.meta.env.VITE_USER_GETQUIZ,
+        quizData,
+        user,
+      );
+      if (data.error) {
         setFormState((prev) => ({ ...prev, error: data.error }));
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`HTTP request error!`);
       }
-      setQuiz(data.results);
       if (data.results.length === 0) {
         setFormState((prev) => ({
           ...prev,
@@ -62,14 +53,13 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         }));
         return;
       }
+      setQuiz(data.results);
       const initialQuizResult: Result = {
-        ...result,
+        ...initialResultState,
         isubmitted: false,
         isQuizStarted: true,
-        answers: [],
-        correctAnswer: [],
-        questionsAnswered: data.results,
       };
+
       setResult(initialQuizResult);
       localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
@@ -80,6 +70,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
+  // Take the quiz again
   const handleRetakeQuiz = (_id: string) => {
     setFormState({ error: "", loading: true });
     const retakeQuiz = databaseQuiz.filter((quiz) => quiz._id === _id)[0]
@@ -123,80 +114,53 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
-  const submitQuiz = () => {
-    // get all the answers from the questions
-    if (!result.isubmitted) {
-      setResult((prev) => ({ ...prev, isubmitted: true }));
-      const correctAnswer = quiz.map((item, index) => ({
-        number: index + 1,
-        answer: item.correct_answer,
-      }));
-      const count = correctAnswer.reduce((acc, ans) => {
-        const matchingAnswer = result.answers.find(
-          (userAnswer) => userAnswer.number === ans.number,
-        );
-        if (matchingAnswer && ans.answer === matchingAnswer.answer) {
-          return acc + 1;
-        }
-        return acc;
-      }, 0);
+  const submitQuiz = async () => {
+    try {
+      setResult((prev) => ({ ...prev, isSubmitting: true }));
       const submittedResult: Result = {
         ...result,
-        score: count,
         isubmitted: true,
         isQuizStarted: false,
-        correctAnswer,
       };
       setResult(submittedResult);
       localStorage.setItem("quizResults", JSON.stringify(submittedResult));
-      postResult();
-    } else {
-      setResult((prev) => ({ ...prev, isubmitted: false }));
-      setQuiz([initialQuizState]);
-    }
-  };
-
-  const postResult = async () => {
-    try {
-      const quizResult: QuizResultTypes = {
+      const quizResult: QuizSubmitTypes = {
         username: user.name,
-        category: result.questionsAnswered[0].category,
-        score: result.score,
-        totalQuestions: result.questionsAnswered.length,
-        questions: result.questionsAnswered,
+        answers: result.answers,
+        questions: quiz,
       };
-      const response = await fetch(import.meta.env.VITE_USER_SUBMITRESULTS, {
-        method: "POST",
-        body: JSON.stringify(quizResult),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await postData(
+        import.meta.env.VITE_USER_SUBMITRESULTS,
+        quizResult,
+        user,
+      );
+      if (!data || data.error) {
+        console.log(data.error);
+        return;
       }
+      console.log(data);
+      setDatabaseResult(data);
+      setResult((prev) => ({ ...prev, isubmitted: true }));
     } catch (error) {
-      console.error(error);
+      console.log(error);
+    } finally {
+      setResult((prev) => ({ ...prev, isSubmitting: false }));
     }
   };
 
+  // get all user question from the database
   const getAllQuestions = async () => {
     try {
       setIsFetchingDbQuiz(true);
       const username = { username: user.name };
-      const response = await fetch(import.meta.env.VITE_USER_GETALLQUIZ, {
-        method: "POST",
-        body: JSON.stringify(username),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
+      const data = await postData(
+        import.meta.env.VITE_USER_GETALLQUIZ,
+        username,
+        user,
+      );
+      if (!data || data.error) {
         setDatabaseQuiz([]);
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`HTTP fetch error!`);
       }
       setDatabaseQuiz(data);
     } catch (error) {
@@ -206,6 +170,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
+  // reload questions on page refresh
   useEffect(() => {
     setIsQuizLoading(true);
     const quizJson = localStorage.getItem("quizerQuiz");
@@ -238,6 +203,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     databaseQuiz,
     isFetchingDbQuiz,
     handleRetakeQuiz,
+    databaseResult,
   };
 
   return (

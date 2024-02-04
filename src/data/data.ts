@@ -29,22 +29,13 @@ export const initialQuizState: Quiz = {
   incorrect_answers: [""],
 };
 export const initialResultState: Result = {
-  score: 0,
   answers: [
     {
       number: 1,
       answer: "",
     },
   ],
-  correctAnswer: [
-    {
-      number: 1,
-      answer: "",
-    },
-  ],
-  questionAttempts: 0,
-  questionsFailed: 0,
   isubmitted: true,
+  isSubmitting: false,
   isQuizStarted: false,
-  questionsAnswered: [initialQuizState],
 };
