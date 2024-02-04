@@ -1,3 +1,9 @@
+import AboutComponent from "@/components/AboutComponent";
+
 export default function About() {
-  return <div>About</div>;
+  return (
+    <div>
+      <AboutComponent />
+    </div>
+  );
 }
