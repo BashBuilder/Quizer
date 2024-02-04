@@ -34,7 +34,6 @@ export default function SignupUser({ isLogin }: LoginProps) {
   } = useForm<LoginSchemaType>({ resolver: zodResolver(loginSchema) });
 
   const signupUser: SubmitHandler<LoginSchemaType> = (data) => {
-    console.log(data);
     signup(data.email, data.password, data.username);
   };
   return (
