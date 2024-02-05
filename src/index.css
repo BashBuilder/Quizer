@@ -68,6 +68,7 @@
   h4 {
     @apply cursor-default text-2xl font-bold;
   }
+
   h5 {
     @apply cursor-default text-xl font-bold;
   }
