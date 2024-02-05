@@ -35,12 +35,12 @@ export default function Result() {
               knowledge.
             </p>
             <div className="my-4 flex items-center justify-center gap-6">
-              <button
+              {/* <button
                 className="bg-primary font-semibold text-white"
                 onClick={() => navigate("/answerQuiz")}
               >
                 Review Questions
-              </button>
+              </button> */}
               <button
                 className="bg-primary font-semibold text-white"
                 onClick={handleAnotherQuiz}

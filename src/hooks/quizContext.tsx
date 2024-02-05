@@ -65,6 +65,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       setDatabaseResult(undefined);
       localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
+      localStorage.setItem("databaseResult", JSON.stringify(undefined));
     } catch (error) {
       console.error(error);
     } finally {
@@ -86,8 +87,11 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       answers: [],
     };
     setResult(initialQuizResult);
+    setDatabaseResult(undefined);
     localStorage.setItem("quizerQuiz", JSON.stringify(retakeQuiz));
     localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
+    localStorage.setItem("databaseResult", JSON.stringify(undefined));
+
     setFormState((prev) => ({ ...prev, loading: false }));
   };
 
@@ -142,6 +146,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         return;
       }
       setDatabaseResult(data);
+      localStorage.setItem("databaseResult", JSON.stringify(data));
     } catch (error) {
       console.log(error);
     } finally {
@@ -182,6 +187,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     setIsQuizLoading(true);
     const quizJson = localStorage.getItem("quizerQuiz");
     const resultJson = localStorage.getItem("quizResults");
+    const databaseResultJson = localStorage.getItem("databaseResult");
     if (quizJson) {
       const localQuiz = JSON.parse(quizJson);
       setQuiz(localQuiz);
@@ -191,10 +197,8 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         questionsAnswered: localQuiz,
       }));
     }
-    if (resultJson) {
-      const localResult = JSON.parse(resultJson);
-      setResult(localResult);
-    }
+    resultJson && setResult(JSON.parse(resultJson));
+    databaseResultJson && setDatabaseResult(JSON.parse(databaseResultJson));
     getAllQuestions();
     setIsQuizLoading(false);
     // eslint-disable-next-line

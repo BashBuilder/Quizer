@@ -14,6 +14,7 @@ export default function AnswerQuiz() {
   const { setOptions, result, databaseResult } = useQuizContext();
   const { answers, isubmitted, isQuizStarted } = result;
 
+
   const navigate = useNavigate();
   // Set questions base on the current question index
   useEffect(() => {

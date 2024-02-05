@@ -53,9 +53,9 @@ export default function GetQuiz() {
   }, [loading]);
 
   return (
-    <section>
+    <section className="px-0 md:px-20">
       {/* left container pencil */}
-      <div className="col-span-6 items-center py-4 md:flex ">
+      <div className="col-span-6 mt-8 items-center px-16 md:flex md:px-0 md:py-4 ">
         <img
           src="assets/pen.png"
           alt="pencils"
