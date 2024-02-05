@@ -42,7 +42,7 @@ export default function SignupUser({ isLogin }: LoginProps) {
   };
   return (
     <form
-      className={` relative flex flex-col items-center justify-center overflow-hidden px-4 transition-all duration-500  ease-in-out xl:px-16  ${
+      className={` relative flex flex-col items-center overflow-hidden px-4 pt-8 transition-all duration-500 ease-in-out md:justify-center  md:pt-0 xl:px-16  ${
         !isLogin
           ? " delay-500"
           : " pointer-events-none z-[1] opacity-0 delay-100 "

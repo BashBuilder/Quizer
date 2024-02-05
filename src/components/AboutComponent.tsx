@@ -1,5 +1,3 @@
-import { Copyright } from "lucide-react";
-
 export default function AboutComponent() {
   return (
     <article className="flex flex-col gap-6 px-6 py-5 md:px-16 md:py-8 xl:px-32">
@@ -24,12 +22,6 @@ export default function AboutComponent() {
           and user-friendly features.
         </p>
       </div>
-
-      <p className="mx-auto my-4 flex gap-2 text-center font-semibold">
-        Copyright <Copyright className="text-primary" />
-        <span className="text-primary">BashBuilder</span> All rights reserved.
-        <span>{new Date().getFullYear()}</span>
-      </p>
     </article>
   );
 }

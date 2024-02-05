@@ -14,7 +14,6 @@ export default function AnswerQuiz() {
   const { setOptions, result, databaseResult } = useQuizContext();
   const { answers, isubmitted, isQuizStarted } = result;
 
-
   const navigate = useNavigate();
   // Set questions base on the current question index
   useEffect(() => {
@@ -60,7 +59,7 @@ export default function AnswerQuiz() {
         {!isubmitted ? "Submit" : "Home"}
       </button>
       {/* Display questions */}
-      <article className=" mx-auto flex min-h-96 w-[90vw] max-w-5xl flex-col gap-8 rounded-3xl bg-orange-100 p-4  shadow-2xl md:px-20 md:py-10 ">
+      <article className=" mx-auto flex  w-[90vw] max-w-5xl flex-col gap-8 rounded-3xl border-2 border-red-500 bg-orange-100 p-4 py-8  shadow-2xl md:px-20 md:py-10 ">
         <div className="flex justify-center gap-2 text-center">
           <p className="text-xl "> {quizIndex + 1}. </p>
           <p
@@ -98,7 +97,7 @@ export default function AnswerQuiz() {
             );
           })}
         </div>
-        <div className="flex justify-between ">
+        <div className="flex justify-between">
           <button
             className="bg-orange-300 hover:bg-orange-400 hover:shadow-lg disabled:opacity-35"
             onClick={() => handleNextQuestion(-1)}

@@ -3,6 +3,7 @@ import { useAuthContext } from "../hooks/authContext";
 import Why from "@/components/Why";
 import HowItWorks from "@/components/HowItWorks";
 import AboutComponent from "@/components/AboutComponent";
+import Footer from "@/components/Footer";
 
 function Home() {
   const { isAuthenticated } = useAuthContext();
@@ -95,6 +96,7 @@ function Home() {
       <Why />
       <HowItWorks />
       <AboutComponent />
+      <Footer />
     </div>
   );
 }

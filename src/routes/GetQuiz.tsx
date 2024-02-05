@@ -53,9 +53,9 @@ export default function GetQuiz() {
   }, [loading]);
 
   return (
-    <section className="px-0 md:px-20">
+    <section className=" px-0 md:px-20">
       {/* left container pencil */}
-      <div className="col-span-6 mt-8 items-center px-16 md:flex md:px-0 md:py-4 ">
+      <div className="col-span-6 mt-4 items-center px-16 md:flex  md:px-0 md:py-4 ">
         <img
           src="assets/pen.png"
           alt="pencils"
@@ -63,7 +63,7 @@ export default function GetQuiz() {
         />
       </div>
       {/* right form container  */}
-      <div className="flex flex-col items-center justify-center gap-10 md:col-span-6  md:h-fit md:py-6 md:text-left ">
+      <div className="mx-auto flex w-screen max-w-[30rem] flex-col items-center justify-center md:col-span-6 md:w-full md:py-6 md:text-left ">
         <form
           onSubmit={handleSubmit(submitQuiz)}
           className=" flex w-4/5 max-w-[25rem] flex-col gap-4 rounded-xl bg-white   "

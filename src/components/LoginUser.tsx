@@ -98,9 +98,6 @@ export default function LoginUser({ isLogin }: LoginProps) {
         {errors.password && (
           <p className="absolute text-red-500">{errors.password.message}</p>
         )}
-        {/* <h6 className="mt-8 cursor-pointer text-right font-bold text-slate-700 hover:underline ">
-          Forgot password
-        </h6> */}
       </div>
       {error && <p className="text-red-500"> {error} </p>}
       <div className="mt-4 flex items-center justify-center">
