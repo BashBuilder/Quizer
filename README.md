@@ -1,30 +1,67 @@
-# React + TypeScript + Vite
+# Quizer - Quiz App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Quizer is an interactive quiz application that allows users to create, take, and manage quizzes effortlessly. Test your knowledge on a variety of topics and challenge your friends!
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Development](#development)
+- [License](#license)
 
-## Expanding the ESLint configuration
+## Introduction
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Quizer is a user-friendly quiz application designed to make learning and testing knowledge enjoyable. Whether you're a student preparing for exams, a professional seeking a brain teaser, or just someone looking for a fun activity, Quizer has something for everyone.
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **Dynamic Quizzes:** Create and take quizzes on a wide range of topics.
+- **User Accounts:** Sign up, log in, and track your quiz performance over time.
+- **Results History:** Review past quiz results and see your progress.
+- **Interactive UI:** Enjoy a clean and intuitive user interface.
+- **Password Toggle:** Toggle password visibility for enhanced user experience.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Installation
+
+To get started with Quizer, follow these steps:
+
+1. Clone the repository:
+
+2. Install dependencies:
+   cd quizer
+   npm install
+3. Start the development server:
+   npm start
+
+4. Visit http://localhost:3000 in your browser.
+
+## Usage
+
+1. Sign Up / Log In:
+   Create an account or log in if you already have one.
+
+2. Create a Quiz:
+   Navigate to the "Create Quiz" section.
+   Specify quiz details and questions.
+
+3. Take a Quiz:
+   Explore available quizzes or take one you created.
+   Answer questions and submit your quiz.
+
+4. Review Results:
+   View your quiz results and see correct/incorrect answers.
+
+## Configuration
+
+Quizer requires configuration for database connections, environment variables, and other settings. Refer to the Configuration Guide for more details.
+
+## Development
+
+If you want to contribute to Quizer or explore its codebase, refer to the Development Guide for information on setting up the development environment and contributing guidelines.
+
+## License
+
+Quizer is licensed under the [MIT License].
