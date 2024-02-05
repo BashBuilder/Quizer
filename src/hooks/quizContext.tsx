@@ -26,7 +26,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   });
   const [isQuizLoading, setIsQuizLoading] = useState(true);
   const [isFetchingDbQuiz, setIsFetchingDbQuiz] = useState(false);
-  const [databaseResult, setDatabaseResult] = useState<DatabaseResult>();
+  const [databaseResult, setDatabaseResult] = useState<DatabaseResult | "">("");
   // Fetch the quiz from the api endpoint
   const getQuiz = async (
     amount: string | number,
@@ -62,10 +62,10 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       };
 
       setResult(initialQuizResult);
-      setDatabaseResult(undefined);
+      setDatabaseResult("");
       localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
       localStorage.setItem("quizerQuiz", JSON.stringify(data.results));
-      localStorage.setItem("databaseResult", JSON.stringify(undefined));
+      localStorage.setItem("databaseResult", JSON.stringify(""));
     } catch (error) {
       console.error(error);
     } finally {
@@ -75,7 +75,6 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   // Take the quiz again
   const handleRetakeQuiz = (_id: string) => {
-    setDatabaseResult(undefined);
     setFormState({ error: "", loading: true });
     const retakeQuiz = databaseQuiz.filter((quiz) => quiz._id === _id)[0]
       .questions;
@@ -87,10 +86,10 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       answers: [],
     };
     setResult(initialQuizResult);
-    setDatabaseResult(undefined);
+    setDatabaseResult("");
     localStorage.setItem("quizerQuiz", JSON.stringify(retakeQuiz));
     localStorage.setItem("quizResults", JSON.stringify(initialQuizResult));
-    localStorage.setItem("databaseResult", JSON.stringify(undefined));
+    localStorage.setItem("databaseResult", JSON.stringify(""));
 
     setFormState((prev) => ({ ...prev, loading: false }));
   };
@@ -122,14 +121,13 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const submitQuiz = async () => {
     try {
       setFormState({ error: "", loading: true });
-      setResult((prev) => ({ ...prev, isSubmitting: true }));
-      const submittedResult: Result = {
-        ...result,
-        isubmitted: true,
-        isQuizStarted: false,
-      };
-      setResult(submittedResult);
-      localStorage.setItem("quizResults", JSON.stringify(submittedResult));
+      // const submittedResult: Result = {
+      //   ...result,
+      //   isubmitted: true,
+      //   isQuizStarted: false,
+      // };
+      // setResult(submittedResult);
+      // localStorage.setItem("quizResults", JSON.stringify(submittedResult));
 
       const quizResult: QuizSubmitTypes = {
         username: user.name,
@@ -142,7 +140,7 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         user,
       );
       if (!data || data.error) {
-        console.log(data.error);
+        setFormState({ error: data.error, loading: true });
         return;
       }
       setDatabaseResult(data);
@@ -176,6 +174,19 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       setIsFetchingDbQuiz(false);
     }
   };
+
+  useEffect(() => {
+    if (!formState.loading && !result.isubmitted && databaseResult) {
+      const submittedResult: Result = {
+        ...result,
+        isubmitted: true,
+        isQuizStarted: false,
+      };
+      setResult(submittedResult);
+      localStorage.setItem("quizResults", JSON.stringify(submittedResult));
+    }
+    // eslint-disable-next-line
+  }, [formState.loading, result.isubmitted]);
 
   useEffect(() => {
     getAllQuestions();

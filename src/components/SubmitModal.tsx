@@ -12,7 +12,7 @@ export default function SubmitModal({
   isModalOpen,
   setIsModalOpen,
 }: ModalPropsType) {
-  const { submitQuiz, databaseResult, formState } = useQuizContext();
+  const { submitQuiz, formState, result, databaseResult } = useQuizContext();
   const navigate = useNavigate();
 
   const { loading } = formState;
@@ -22,12 +22,12 @@ export default function SubmitModal({
   };
 
   useEffect(() => {
-    if (!loading && databaseResult) {
+    if (!result.isubmitted && databaseResult) {
       navigate("/results");
       setIsModalOpen(false);
     }
     // eslint-disable-next-line
-  }, [loading, databaseResult]);
+  }, [result.isubmitted, databaseResult]);
 
   return (
     <div

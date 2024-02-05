@@ -27,7 +27,7 @@ export default function Dashboard() {
   }, [databaseQuiz, startingPageNumber, endPageNumber]);
 
   return (
-    <section className=" grid  grid-cols-1 gap-2 pt-10  md:grid-cols-12 md:px-10 md:py-8 ">
+    <section className="pt-10">
       <div className="col-span-7 h-full flex-col justify-center gap-10 md:flex md:min-h-[500px] ">
         {isFetchingDbQuiz ? (
           <div className="mx-auto  flex h-full min-h-[500px] w-fit items-center justify-center">
@@ -54,7 +54,7 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className=" flex min-h-[400px] flex-col justify-between gap-10 md:flex">
+          <div className=" flex flex-col justify-between gap-10 md:flex">
             <div className="flex items-center gap-2">
               <img src="assets/quizzer.png" alt="logo" className="w-12" />
               <h2 className=" text-slate-800">Performance</h2>

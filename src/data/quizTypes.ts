@@ -13,7 +13,7 @@ export interface QuizContextProps {
   databaseQuiz: DatbaseQuizType[];
   isFetchingDbQuiz: boolean;
   handleRetakeQuiz: (_id: string) => void;
-  databaseResult: DatabaseResult | undefined;
+  databaseResult: DatabaseResult | "";
 }
 export interface FormState {
   error: string;

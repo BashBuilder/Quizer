@@ -1,5 +1,5 @@
 import { useQuizContext } from "@/hooks/quizContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Result() {
   const { submitQuiz, databaseResult } = useQuizContext();
@@ -9,6 +9,7 @@ export default function Result() {
     navigate("/quiz");
     submitQuiz();
   };
+
   return (
     <div>
       <section className="h-[80%] min-h-[600px] py-4">
@@ -35,12 +36,12 @@ export default function Result() {
               knowledge.
             </p>
             <div className="my-4 flex items-center justify-center gap-6">
-              {/* <button
+              <button
                 className="bg-primary font-semibold text-white"
                 onClick={() => navigate("/answerQuiz")}
               >
                 Review Questions
-              </button> */}
+              </button>
               <button
                 className="bg-primary font-semibold text-white"
                 onClick={handleAnotherQuiz}
@@ -62,6 +63,7 @@ export default function Result() {
             >
               Take Quiz
             </button>
+            <Link to="/answerQuiz">Review Questions</Link>
           </div>
         )}
         <div className=" order-1 flex items-center justify-center md:order-2 md:col-span-6 ">
