@@ -28,7 +28,7 @@ export default function Dashboard() {
 
   return (
     <section className="pt-10">
-      <div className="col-span-7 h-full flex-col justify-center gap-10 md:flex md:min-h-[500px] ">
+      <div className="col-span-7 h-full flex-col justify-center gap-10 md:flex">
         {isFetchingDbQuiz ? (
           <div className="mx-auto  flex h-full min-h-[500px] w-fit items-center justify-center">
             <div className=" rounded-md bg-primary p-4 ">
@@ -37,7 +37,7 @@ export default function Dashboard() {
           </div>
         ) : databaseQuiz.length === 0 ? (
           <div className=" flex min-h-[500px] flex-col justify-center gap-10 md:flex md:px-20 ">
-            <img src="assets/homeIcon.png" alt="" className="md:hidden" />
+            <img src="assets/homeIcon.png" alt="home" className="md:hidden" />
             <h2 className="text-center md:text-left">
               No Previous Performance
             </h2>

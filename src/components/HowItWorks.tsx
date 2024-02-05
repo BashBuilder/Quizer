@@ -1,9 +1,19 @@
 import { CheckSquare2Icon } from "lucide-react";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function HowItWorks() {
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      duration: 3000,
+      easing: "ease-out-cubic",
+    });
+  }, []);
   return (
     <section className="gap-6 py-5">
-      <div className="col-span-6 flex flex-col gap-6 ">
+      <div className="col-span-6 flex flex-col gap-6 " data-aos="fade-right">
         <h4 className="text-primary">HOW</h4>
         <h2 className="text-slate-800">How It Works</h2>
         <ul>
@@ -36,7 +46,7 @@ export default function HowItWorks() {
           </li>
         </ul>
       </div>
-      <div className="col-span-6">
+      <div className="col-span-6" data-aos="fade-up-left">
         <img src="assets/svg/slider-5.svg" alt="how" className="w-full" />
       </div>
     </section>

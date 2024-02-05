@@ -1,13 +1,30 @@
 import { CheckCheckIcon } from "lucide-react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 export default function Why() {
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      duration: 3000,
+      easing: "ease-out-cubic",
+    });
+  }, []);
+
   return (
     <section className="gap-6 ">
-      <div className="order-2 col-span-6 w-auto md:order-1">
+      <div
+        className="order-2 col-span-6 w-auto md:order-1"
+        data-aos="fade-right"
+      >
         <img src="assets/svg/slider-1.svg" alt="slider-1" className="w-full" />
       </div>
 
-      <div className="order-1 col-span-6 flex flex-col gap-6 md:order-2 ">
+      <div
+        className="order-1 col-span-6 flex flex-col gap-6 md:order-2 "
+        data-aos="fade-left"
+      >
         <h4 className="font-semibold text-primary"> WHY </h4>
         <h2>Quizer: Quizzing Beyond Boundaries</h2>
         <p>
