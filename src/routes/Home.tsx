@@ -10,7 +10,7 @@ function Home() {
 
   return (
     <div>
-      <section className=" h-[90vh] min-h-[600px] items-center justify-items-center px-10 pt-12 md:grid md:h-[80vh] md:grid-cols-12 md:px-32 md:py-0 ">
+      <section className=" min-h-[600px] items-center justify-items-center px-4 pt-12 md:grid md:h-[80vh] md:grid-cols-12 md:px-32 md:py-0 ">
         <div className="flex flex-col gap-6 md:col-span-6 md:text-left ">
           {auth ? (
             <div className="flex flex-col gap-8">
@@ -41,10 +41,10 @@ function Home() {
             </div>
           ) : (
             <div className="flex flex-col gap-6">
-              <h1 className="capitalize leading-[3.5rem] tracking-wider text-orange-700 md:text-left ">
+              <h1 className="text-4xl capitalize   text-orange-700 md:text-left ">
                 Welcome to Quizzer
               </h1>
-              <h5 className="font-semibold capitalize text-slate-700 ">
+              <h5 className="font-semibold capitalize text-slate-500 ">
                 Unlock the Power of Knowledge with Our Engaging Quizzes
               </h5>
               <ul className="flex flex-col gap-2">
