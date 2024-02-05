@@ -6,7 +6,7 @@ import HomeLanding from "@/components/HomeLanding";
 
 function Home() {
   return (
-    <div>
+    <div className="overflow-hidden">
       <HomeLanding />
       <Why />
       <HowItWorks />

@@ -19,7 +19,9 @@ export default function SignupUser({ isLogin }: LoginProps) {
     .object({
       username: z.string().min(1, { message: "Please fill a username" }),
       email: z.string().email({ message: "Enter a valid email" }),
-      password: z.string().min(1, { message: "Enter your password" }),
+      password: z
+        .string()
+        .min(8, { message: "Password must be minimum of 8 characters" }),
       confirmPassword: z
         .string()
         .min(1, { message: "Kindly confirm your password" }),
@@ -145,16 +147,22 @@ export default function SignupUser({ isLogin }: LoginProps) {
         </label>
       </div>
       {errors.email || errors.password || errors.username ? (
-        <p className=" text-rose-500 ">
-          {errors.email ? errors.email.message : "Kindly Fill all the forms"}
+        <p className=" text-center text-rose-500 ">
+          {errors.email
+            ? errors.email.message
+            : errors.password
+              ? errors.password.message
+              : "Kindly Fill all the forms"}
         </p>
       ) : (
         errors.confirmPassword && (
-          <p className="text-red-500"> {errors.confirmPassword.message} </p>
+          <p className="text-center text-red-500">
+            {errors.confirmPassword.message}
+          </p>
         )
       )}
       <div className="flex flex-col items-center justify-center">
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
         <button className="mt-2 bg-primary text-white ">
           {loading ? <Loader2 className="animate-spin" /> : "Sign Up"}
         </button>
