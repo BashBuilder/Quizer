@@ -37,7 +37,7 @@ export default function HowItWorks() {
         </ul>
       </div>
       <div className="col-span-6">
-        <img src="assets/svg/slider-5.svg" alt="how" />
+        <img src="assets/svg/slider-5.svg" alt="how" className="w-full" />
       </div>
     </section>
   );

@@ -2,9 +2,9 @@ import { CheckCheckIcon } from "lucide-react";
 
 export default function Why() {
   return (
-    <section className="gap-6 py-5 md:mt-10">
-      <div className="order-2 col-span-6 md:order-1">
-        <img src="assets/svg/slider-1.svg" alt="" data-aos="flip-left" />
+    <section className="gap-6 ">
+      <div className="order-2 col-span-6 w-auto md:order-1">
+        <img src="assets/svg/slider-1.svg" alt="slider-1" className="w-full" />
       </div>
 
       <div className="order-1 col-span-6 flex flex-col gap-6 md:order-2 ">

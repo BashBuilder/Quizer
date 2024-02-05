@@ -1,14 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Loader2, Lock, Mail } from "lucide-react";
+import { Loader2, Lock, Mail, Unlock } from "lucide-react";
 import { useAuthContext } from "../hooks/authContext";
+import { useState } from "react";
 
 interface LoginProps {
   isLogin: boolean;
 }
 
 export default function LoginUser({ isLogin }: LoginProps) {
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
   const { login, loginState } = useAuthContext();
   const { loading, error } = loginState;
   // zod schema for form
@@ -55,7 +57,7 @@ export default function LoginUser({ isLogin }: LoginProps) {
           size={20}
         />
         <label
-          className="absolute -left-2 -top-3 scale-[.8] text-lg text-primary transition-all  duration-200 ease-linear peer-placeholder-shown:left-2 peer-placeholder-shown:top-3 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-slate-600 peer-focus:-left-2 peer-focus:-top-3 peer-focus:scale-[.8] peer-focus:text-primary"
+          className=" absolute -top-2 left-0 text-sm text-primary transition-all duration-200 ease-linear  peer-placeholder-shown:top-5 peer-placeholder-shown:text-lg peer-placeholder-shown:text-slate-600  peer-focus:-top-2 peer-focus:text-sm peer-focus:text-primary"
           htmlFor="loginEmail"
         >
           Email or Username
@@ -64,28 +66,32 @@ export default function LoginUser({ isLogin }: LoginProps) {
           <p className="absolute text-red-500">{errors.email.message}</p>
         )}
       </div>
-
       {/* password container */}
 
       <div className="relative mb-10 w-11/12 max-w-[23rem]">
-        <Lock
-          className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
-          size={20}
-        />
         <input
           className={`peer mt-2 w-full border-b-[.015rem] border-b-primary bg-transparent pb-1 pl-2 pr-12 pt-2 text-lg leading-[1] text-[--slate-800]  outline-none placeholder:text-transparent ${errors.password ? "placeholder-shown:border-b-red-500 focus:border-b-red-500 " : "placeholder-shown:border-b-slate-600 focus:border-b-primary"} `}
-          type="password"
+          type={isPasswordShown ? "text" : "password"}
           placeholder="Password"
           id="loginPassword"
           {...register("password")}
         />
-        <Lock
-          className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
-          size={20}
-        />
+        {isPasswordShown ? (
+          <Unlock
+            className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
+            size={20}
+            onClick={() => setIsPasswordShown((prev) => !prev)}
+          />
+        ) : (
+          <Lock
+            className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
+            size={20}
+            onClick={() => setIsPasswordShown((prev) => !prev)}
+          />
+        )}
         <label
           htmlFor="loginPassword"
-          className="absolute -left-2 -top-3 scale-[.8] text-lg text-primary transition-all  duration-200 ease-linear peer-placeholder-shown:left-2 peer-placeholder-shown:top-3 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-slate-600 peer-focus:-left-2 peer-focus:-top-3 peer-focus:scale-[.8] peer-focus:text-primary"
+          className=" absolute -top-2 left-0 text-sm text-primary transition-all duration-200 ease-linear  peer-placeholder-shown:top-5 peer-placeholder-shown:text-lg peer-placeholder-shown:text-slate-600  peer-focus:-top-2 peer-focus:text-sm peer-focus:text-primary"
         >
           Password
         </label>
