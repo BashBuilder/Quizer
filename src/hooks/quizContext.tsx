@@ -172,6 +172,11 @@ const QuizProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    getAllQuestions();
+    // eslint-disable-next-line
+  }, [databaseResult]);
+
   // reload questions on page refresh
   useEffect(() => {
     setIsQuizLoading(true);
