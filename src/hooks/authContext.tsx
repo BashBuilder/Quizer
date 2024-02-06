@@ -22,6 +22,9 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     loading: false,
     error: "",
   });
+  const [isLogin, setIsLogin] = useState(true);
+
+  const changeLoginState = () => setIsLogin((prev) => !prev);
   // login function
   const login = async (email: string, password: string) => {
     const loginData = { email, password };
@@ -122,6 +125,8 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     signupState,
     logout,
     isAuthenticated,
+    isLogin,
+    changeLoginState,
   };
 
   return (

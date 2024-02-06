@@ -19,4 +19,6 @@ export interface AuthContextProps {
     state: boolean;
     loading: boolean;
   };
+  isLogin: boolean;
+  changeLoginState: () => void;
 }

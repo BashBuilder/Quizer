@@ -5,7 +5,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 
 export default function HomeLanding() {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, isLogin } = useAuthContext();
   const { state: auth } = isAuthenticated;
 
   useEffect(() => {
@@ -20,15 +20,20 @@ export default function HomeLanding() {
     <section className="min-h-[600px] py-6  ">
       <div
         className="flex flex-col gap-6 md:col-span-6 md:text-left"
-        data-aos="fade-right"
+        // data-aos="fade-right"
       >
         {auth ? (
           <div className="flex flex-col gap-8">
-            <h1 className="guerri text-5xl tracking-tighter text-orange-600 md:text-left ">
-              Welcome Back
+            <h1
+              className="guerri text-5xl tracking-tighter text-orange-600 md:text-left"
+              data-aos="zoom-in-right"
+            >
+              Welcome {isLogin && "Back"}
             </h1>
             <h5 className="font-medium capitalize text-slate-700 ">
-              Glad to see you again at Quizzer Ready for more quizzes and fun?
+              {isLogin
+                ? "Glad to see you again at Quizzer Ready for more quizzes and fun?"
+                : "Glad to see you Join Quizzer. Ready for some quiz and fun?"}
             </h5>
             <p className="text-lg font-semibold italic text-slate-700">
               What's New For You

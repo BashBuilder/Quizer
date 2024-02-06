@@ -1,9 +1,11 @@
-import { useState } from "react";
 import LoginUser from "../components/LoginUser";
 import SignupUser from "../components/SignupUser";
+import { useAuthContext } from "@/hooks/authContext";
 
 export default function Login() {
-  const [isLogin, setIsLogin] = useState(true);
+  const { isLogin, changeLoginState } = useAuthContext();
+
+  // const [isLogin, setIsLogin] = useState(true);
   return (
     <section className="h-screen items-center justify-center p-0 md:flex ">
       <div className=" relative h-screen min-h-[600px] w-full overflow-hidden md:h-[500px] md:w-11/12 md:max-w-4xl md:rounded-3xl md:bg-red-50">
@@ -21,7 +23,7 @@ export default function Login() {
               <h1 className="text-white">Quizer</h1>
               <button
                 className="border-2 border-white font-semibold text-white"
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={changeLoginState}
               >
                 Sign Up
               </button>
@@ -38,7 +40,7 @@ export default function Login() {
               <h1 className="text-white">Quizer</h1>
               <button
                 className="border-2 border-white font-semibold text-white"
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={changeLoginState}
               >
                 Sign In
               </button>
