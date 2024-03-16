@@ -10,10 +10,12 @@ import Dashboard from "./routes/Dashboard";
 import Navbar from "./components/Navbar";
 import How from "./routes/How";
 import About from "./routes/About";
+import JambForm from "./components/JambForm";
+import VerifyEmail from "./routes/verifyEmail";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
-  const { state: auth } = isAuthenticated;
+  const { state: auth, isEmailVerified } = isAuthenticated;
   return (
     <BrowserRouter>
       <main className="relative mx-auto max-w-[92rem]">
@@ -47,6 +49,14 @@ function App() {
           <Route
             path="/dashboard"
             element={auth ? <Dashboard /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/jambform"
+            element={auth ? <JambForm /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/verifyemail"
+            element={auth ? <VerifyEmail /> : <Navigate to="/auth" />}
           />
         </Routes>
       </main>

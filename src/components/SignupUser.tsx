@@ -21,7 +21,19 @@ export default function SignupUser({ isLogin }: LoginProps) {
       email: z.string().email({ message: "Enter a valid email" }),
       password: z
         .string()
-        .min(8, { message: "Password must be minimum of 8 characters" }),
+        .min(8, "Password must be at least 8 characters long")
+        .refine(
+          (value) => /[A-Z]/.test(value),
+          "Password must contain at least one uppercase letter",
+        )
+        .refine(
+          (value) => /\d/.test(value),
+          "Password must contain at least one number",
+        )
+        .refine(
+          (value) => /[!@#$%^&*(),.?":{}|<>]/.test(value),
+          "Password must contain at least one special character",
+        ),
       confirmPassword: z
         .string()
         .min(1, { message: "Kindly confirm your password" }),
@@ -99,17 +111,19 @@ export default function SignupUser({ isLogin }: LoginProps) {
           {...register("password")}
         />
         {isPasswordShown ? (
-          <Unlock
-            className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
-            size={20}
+          <button
+            className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsPasswordShown((prev) => !prev)}
-          />
+          >
+            <Unlock size={20} />
+          </button>
         ) : (
-          <Lock
-            className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
-            size={20}
+          <button
+            className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsPasswordShown((prev) => !prev)}
-          />
+          >
+            <Lock size={20} />
+          </button>
         )}
         <label
           htmlFor="signupPassword"
@@ -127,17 +141,19 @@ export default function SignupUser({ isLogin }: LoginProps) {
           {...register("confirmPassword")}
         />
         {isConfirmPassWordShown ? (
-          <Unlock
-            className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
-            size={20}
+          <button
+            className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsConfirmPassWordShown((prev) => !prev)}
-          />
+          >
+            <Unlock size={20} />
+          </button>
         ) : (
-          <Lock
-            className="absolute right-4 top-4 text-primary transition-all duration-200 peer-placeholder-shown:text-slate-500  peer-focus:text-primary "
-            size={20}
+          <button
+            className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsConfirmPassWordShown((prev) => !prev)}
-          />
+          >
+            <Lock size={20} />
+          </button>
         )}
         <label
           htmlFor="confirmPassword"

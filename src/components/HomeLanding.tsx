@@ -90,13 +90,21 @@ export default function HomeLanding() {
             </p>
           </div>
         )}
-        <div className="flex justify-center md:justify-start">
+        <div className="flex justify-center gap-10 md:justify-start">
           <Link
             to={auth ? "/quiz" : "/auth"}
             className=" rounded-md bg-primary px-4 py-2 font-semibold text-white hover:opacity-90 hover:shadow-xl"
           >
             {auth ? "Take Quiz" : "Sign Up"}
           </Link>
+          {auth && (
+            <Link
+              to="/jambform"
+              className=" rounded-md bg-green-600 px-4 py-2 font-semibold text-white hover:opacity-90 hover:shadow-xl"
+            >
+              Jamb Cbt
+            </Link>
+          )}
         </div>
       </div>
       <div

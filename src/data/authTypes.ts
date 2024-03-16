@@ -18,7 +18,9 @@ export interface AuthContextProps {
   isAuthenticated: {
     state: boolean;
     loading: boolean;
+    isEmailVerified: boolean;
   };
   isLogin: boolean;
   changeLoginState: () => void;
+  trialsDb: { databaseID: string; trials: number };
 }
