@@ -112,6 +112,7 @@ export default function SignupUser({ isLogin }: LoginProps) {
         />
         {isPasswordShown ? (
           <button
+            type="button"
             className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsPasswordShown((prev) => !prev)}
           >
@@ -119,6 +120,7 @@ export default function SignupUser({ isLogin }: LoginProps) {
           </button>
         ) : (
           <button
+            type="button"
             className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsPasswordShown((prev) => !prev)}
           >
@@ -142,6 +144,7 @@ export default function SignupUser({ isLogin }: LoginProps) {
         />
         {isConfirmPassWordShown ? (
           <button
+            type="button"
             className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsConfirmPassWordShown((prev) => !prev)}
           >
@@ -149,6 +152,7 @@ export default function SignupUser({ isLogin }: LoginProps) {
           </button>
         ) : (
           <button
+            type="button"
             className="absolute right-0 top-3  text-primary  transition-all  duration-200 hover:shadow-none peer-placeholder-shown:text-slate-500 peer-focus:text-primary "
             onClick={() => setIsConfirmPassWordShown((prev) => !prev)}
           >

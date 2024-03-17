@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar";
 import How from "./routes/How";
 import About from "./routes/About";
 import JambForm from "./components/JambForm";
-import VerifyEmail from "./routes/verifyEmail";
+import VerifyEmail from "./routes/VerifyEmail";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
@@ -27,36 +27,93 @@ function App() {
         {/* {!isNavbarShown && <Navbar />} */}
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={auth && !isEmailVerified ? <VerifyEmail /> : <Home />}
+          />
           <Route path="/how" element={<How />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/auth"
-            element={!auth ? <Auth /> : <Navigate to="/" />}
+            element={
+              !auth ? (
+                <Auth />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route
             path="/quiz"
-            element={auth ? <GetQuiz /> : <Navigate to="/auth" />}
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <GetQuiz />
+              )
+            }
           />
           <Route
             path="/answerQuiz"
-            element={auth ? <AnswerQuiz /> : <Navigate to="/auth" />}
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <AnswerQuiz />
+              )
+            }
           />
           <Route
             path="/results"
-            element={auth ? <Result /> : <Navigate to="/auth" />}
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <Result />
+              )
+            }
           />
           <Route
             path="/dashboard"
-            element={auth ? <Dashboard /> : <Navigate to="/auth" />}
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <Dashboard />
+              )
+            }
           />
           <Route
             path="/jambform"
-            element={auth ? <JambForm /> : <Navigate to="/auth" />}
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <JambForm />
+              )
+            }
           />
           <Route
             path="/verifyemail"
-            element={auth ? <VerifyEmail /> : <Navigate to="/auth" />}
+            element={
+              auth && !isEmailVerified ? (
+                <VerifyEmail />
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
           />
         </Routes>
       </main>

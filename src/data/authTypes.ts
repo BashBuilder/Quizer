@@ -7,6 +7,7 @@ export interface ProviderChildrenProps {
 export interface User {
   name: string;
   token: string;
+  email: string;
 }
 export interface AuthContextProps {
   user: User;
@@ -23,4 +24,10 @@ export interface AuthContextProps {
   isLogin: boolean;
   changeLoginState: () => void;
   trialsDb: { databaseID: string; trials: number };
+  setTrialsDb: React.Dispatch<
+    React.SetStateAction<{
+      databaseID: string;
+      trials: number;
+    }>
+  >;
 }

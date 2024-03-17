@@ -12,7 +12,12 @@ import {
   signOut,
 } from "firebase/auth";
 import { addDoc, collection, getDocs } from "firebase/firestore";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useLayoutEffect,
+} from "react";
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
@@ -26,6 +31,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const [user, setUser] = useState<User>({
     name: "",
     token: "",
+    email: "",
   });
   const [loginState, setLoginState] = useState<FormState>({
     loading: false,
@@ -99,6 +105,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       const userData = {
         name: username,
         token: user.user.refreshToken,
+        email: user.user.email ? user.user.email : "",
       };
       setUser(userData);
       localStorage.setItem("quizerUser", JSON.stringify(userData));
@@ -132,7 +139,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
 
   const logout = async () => {
     localStorage.removeItem("quizerUser");
-    setUser({ name: "", token: "" });
+    setUser({ name: "", token: "", email: "" });
     setIsAuthenticated({
       state: false,
       loading: false,
@@ -142,7 +149,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     await signOut(auth);
   };
   // authenticate on reload
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsAuthenticated({ state: false, loading: true, isEmailVerified: false });
     const localUserJSON = localStorage.getItem("quizerUser");
     let localUser: User;
@@ -194,6 +201,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     isLogin,
     changeLoginState,
     trialsDb,
+    setTrialsDb,
   };
 
   return (

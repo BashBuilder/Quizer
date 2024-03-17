@@ -87,7 +87,4 @@
   input {
     @apply autofill:appearance-none autofill:bg-transparent autofill:bg-opacity-0 autofill:bg-none autofill:transition-colors autofill:duration-infinite;
   }
-  .apple{
-    @apply text-blue-300 text-slate-600
-  }
 }
