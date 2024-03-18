@@ -9,6 +9,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendEmailVerification,
+  signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { addDoc, collection, getDocs } from "firebase/firestore";
@@ -50,38 +51,26 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const changeLoginState = () => setIsLogin((prev) => !prev);
   // login function
   const login = async (email: string, password: string) => {
-    const loginData = { email, password };
-    console.log(loginData);
     try {
       setLoginState({ error: "", loading: true });
-      // const response = await fetch(import.meta.env.VITE_LOGIN_URI, {
-      //   method: "POST",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(loginData),
-      // });
-      // const data = await response.json();
-      // if (!response.ok) {
-      //   if (data.error.includes("getaddrinfo ENOTFOUND ac-am0iexc")) {
-      //     setLoginState((prevState) => ({
-      //       ...prevState,
-      //       error: "Please check your connection",
-      //     }));
-      //     throw new Error(`HTTP error! Status: ${response.status}`);
-      //   }
-      //   setLoginState((prevState) => ({ ...prevState, error: data.error }));
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // }
-      // const userData = { name: data.username, token: data.token };
-      // setUser(userData);
-      // localStorage.setItem("quizerUser", JSON.stringify(userData));
-      // setIsAuthenticated((prev) => ({ ...prev, state: data.token !== "" }));
 
-      // FIREBASE LOGIN SECTION DOWN HERE
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.error(error);
+      // @ts-expect-error "error is invalid"
+      const message = error.message;
+      if (message.includes("network")) {
+        setLoginState((prev) => ({
+          ...prev,
+          error: "Check your Network connection",
+        }));
+      } else if (message.includes("invalid-credential")) {
+        setLoginState((prev) => ({
+          ...prev,
+          error: "Invalid Email or Password",
+        }));
+      } else {
+        setLoginState((prev) => ({ ...prev, error: message }));
+      }
     } finally {
       setLoginState((prev) => ({ ...prev, loading: false }));
     }
@@ -184,9 +173,9 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         };
         getTrials();
       }
+      setIsAuthenticated((prev) => ({ ...prev, loading: false }));
     });
 
-    setIsAuthenticated((prev) => ({ ...prev, loading: false }));
     return () => unsubscribe();
   }, []);
 

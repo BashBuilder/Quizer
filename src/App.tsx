@@ -12,10 +12,17 @@ import How from "./routes/How";
 import About from "./routes/About";
 import JambForm from "./components/JambForm";
 import VerifyEmail from "./routes/VerifyEmail";
+import JambExam from "./routes/JambExam";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
   const { state: auth, isEmailVerified } = isAuthenticated;
+
+  // const requireAuthAndEmailVerification = (component) => {
+  //   if (!auth) return <Navigate to="/auth" />;
+  //   if (!isEmailVerified) return <Navigate to="/verifyemail" />;
+  //   return component;
+  // };
   return (
     <BrowserRouter>
       <main className="relative mx-auto max-w-[92rem]">
@@ -25,6 +32,7 @@ function App() {
           className="absolute -z-10 h-screen w-full object-cover opacity-10"
         />
         {/* {!isNavbarShown && <Navbar />} */}
+
         <Navbar />
         <Routes>
           <Route
@@ -102,6 +110,18 @@ function App() {
                 <Navigate to="/verifyemail" />
               ) : (
                 <JambForm />
+              )
+            }
+          />
+          <Route
+            path="/jambexam"
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <JambExam />
               )
             }
           />
