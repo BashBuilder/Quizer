@@ -11,10 +11,12 @@ export default function JambNavbar() {
   const { user } = useAuthContext();
   const { isSubmitted } = questionStates;
 
+  console.log(user);
+
   // const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 z-10 flex w-screen justify-between bg-primary px-10 pb-4 pt-2 shadow-sm ">
+    <nav className="fixed top-0 z-10 flex w-screen justify-between bg-green-600 px-10 pb-4 pt-2 shadow-sm ">
       {/* <JambSubmitModal
         isSubmitModalOpen={isSubmitModalOpen}
         setIsSubmitModalOpen={setIsSubmitModalOpen}

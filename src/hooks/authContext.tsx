@@ -53,7 +53,6 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       setLoginState({ error: "", loading: true });
-
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       // @ts-expect-error "error is invalid"
@@ -149,7 +148,12 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     // FIREBASE RELOAD STATUS HERE
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser((prev) => ({ ...prev, token: user.refreshToken }));
+        const newEmail = user.email ?? "";
+        setUser((prev) => ({
+          ...prev,
+          token: user.refreshToken,
+          email: newEmail,
+        }));
         setIsAuthenticated((prev) => ({
           ...prev,
           state: user.refreshToken !== "",
@@ -170,6 +174,10 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
           )[0];
 
           setTrialsDb({ databaseID: userId.id, trials: userId.data.trials });
+          setUser((prev) => ({
+            ...prev,
+            name: userId.data.username,
+          }));
         };
         getTrials();
       }

@@ -1,3 +1,4 @@
+import JambNavbar from "@/components/JambNavbar";
 import { Button } from "@/components/ui/button";
 import { Solution } from "@/data/jambTypes";
 import { useJambContext } from "@/hooks/jambContext";
@@ -69,7 +70,8 @@ export default function JambExam() {
 
     return (
       <div className="bg-green-100">
-        <section className=" flex flex-col gap-4 ">
+        <JambNavbar />
+        <section className=" mt-20 flex flex-col gap-4 ">
           {/* the subject panel */}
           <div className="mx-auto flex w-[90vw] max-w-5xl flex-col ">
             <div className="mb-4 flex flex-wrap gap-2 ">
