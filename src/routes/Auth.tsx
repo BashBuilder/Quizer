@@ -33,7 +33,7 @@ export default function Login() {
 
           {/* sign up */}
           <article className="relative z-20 grid h-full md:grid-cols-2 ">
-            <SignupaUser isLogin={isLogin} />
+            <SignupUser isLogin={isLogin} />
             <div
               className={`flex flex-col items-center gap-4 delay-300 md:justify-center ${!isLogin ? "" : "pointer-events-none opacity-0"}`}
             >
