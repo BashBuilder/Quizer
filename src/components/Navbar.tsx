@@ -49,7 +49,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={` items-center justify-between gap-4 bg-background px-4 py-6 shadow-xl md:px-16   ${isQuizStarted || isAuthRoute || location.pathname.includes("jambexam") ? "hidden" : "flex"} `}
+      className={` items-center justify-between gap-4 bg-background px-4 py-6 shadow-xl md:px-16   ${isQuizStarted || isAuthRoute || location.pathname.includes("jamb") ? "hidden" : "flex"} `}
     >
       <div className="relative overflow-hidden ">
         <img

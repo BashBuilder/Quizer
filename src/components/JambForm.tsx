@@ -131,7 +131,7 @@ export default function SetupForm() {
   };
 
   return (
-    <div>
+    <div className="flex min-h-screen items-center justify-center bg-green-100">
       <JambNavbar />
       <article className="relative flex  items-center justify-center overflow-hidden py-10 ">
         <div className="flex max-h-[30rem] w-fit overflow-hidden rounded-3xl bg-background shadow-2xl ">

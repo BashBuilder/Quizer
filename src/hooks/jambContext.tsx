@@ -147,6 +147,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         selectedOptions: updatedOptions,
       }));
     }
+    localStorage.setItem("questionStates", JSON.stringify(questionStates));
   };
 
   const submitAnswer = () => {
@@ -205,6 +206,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   useEffect(() => {
     const allQuestionJson = localStorage.getItem("allQuestions");
     const examSubmittedJson = localStorage.getItem("examSubmitted");
+    const questionStatesJson = localStorage.getItem("questionStates");
     const examSubmitted = examSubmittedJson && JSON.parse(examSubmittedJson);
 
     if (allQuestionJson) {
@@ -222,6 +224,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
         isSubmitted: examSubmitted.isSubmitted,
         selectedOptions: examSubmitted.selectedOptions,
       });
+      questionStatesJson && setQuestionStates(JSON.parse(questionStatesJson));
     }
     // eslint-disable-next-line
   }, []);

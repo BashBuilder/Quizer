@@ -71,14 +71,14 @@ export default function JambExam() {
     return (
       <div className="bg-green-100">
         <JambNavbar />
-        <section className=" mt-20 flex flex-col gap-4 ">
+        <section className=" flex flex-col gap-4 pt-32 ">
           {/* the subject panel */}
           <div className="mx-auto flex w-[90vw] max-w-5xl flex-col ">
             <div className="mb-4 flex flex-wrap gap-2 ">
               {allQuestions.map((question, index) => (
                 <Button
                   key={index}
-                  className={` rounded-md font-semibold capitalize hover:shadow-lg ${question.subject === selectedSubject ? "bg-primary text-white" : "bg-background text-foreground"} `}
+                  className={` rounded-md font-semibold capitalize hover:bg-green-500 hover:shadow-lg ${question.subject === selectedSubject ? "bg-green-600 text-white" : "bg-background text-foreground"} `}
                   onClick={() => setSelectedSubject(question.subject)}
                 >
                   {question.subject}

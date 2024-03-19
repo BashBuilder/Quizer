@@ -13,6 +13,8 @@ import About from "./routes/About";
 import JambForm from "./components/JambForm";
 import VerifyEmail from "./routes/VerifyEmail";
 import JambExam from "./routes/JambExam";
+import JambResult from "./routes/JambResult";
+import JambDashboard from "./routes/JambDashboard";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
@@ -122,6 +124,30 @@ function App() {
                 <Navigate to="/verifyemail" />
               ) : (
                 <JambExam />
+              )
+            }
+          />
+          <Route
+            path="/Jambresult"
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <JambResult />
+              )
+            }
+          />
+          <Route
+            path="/jambdashboard"
+            element={
+              !auth ? (
+                <Navigate to="/auth" />
+              ) : !isEmailVerified ? (
+                <Navigate to="/verifyemail" />
+              ) : (
+                <JambDashboard />
               )
             }
           />
