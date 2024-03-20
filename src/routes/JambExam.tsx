@@ -1,6 +1,6 @@
 import JambNavbar from "@/components/JambNavbar";
 import { Button } from "@/components/ui/button";
-import { Solution } from "@/data/jambTypes";
+import { QuestionData, Solution } from "@/data/jambTypes";
 import { useJambContext } from "@/hooks/jambContext";
 import { Loader2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -43,7 +43,7 @@ export default function JambExam() {
     const { subject } = questions;
 
     let q;
-    let currentQuestion;
+    let currentQuestion: QuestionData;
     for (let i = 0; i < questions.data.length; i++) {
       if (questions.data[i].questionNub == currentNum) q = questions.data[i];
     }
