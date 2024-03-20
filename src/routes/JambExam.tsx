@@ -88,6 +88,7 @@ export default function JambExam() {
             {/* the top question section */}
             <div className=" mb-4 flex flex-col gap-4 rounded-xl bg-background p-4 shadow-xl md:mb-10 md:px-20 md:py-10  ">
               {questions.data.map((item, qIndex) => {
+                console.log(item.topic);
                 return (
                   <article
                     key={qIndex}
@@ -101,16 +102,22 @@ export default function JambExam() {
                         }}
                       />
                     )}
-                    <div className="flex  gap-1 ">
-                      <p className="text-xl">{currentNum}.</p>
-                      {question && (
-                        <p
-                          className="text-xl"
-                          dangerouslySetInnerHTML={{ __html: question }}
-                        />
-                      )}
+                    <div className="flex  flex-col gap-4  ">
+                      <div className="flex gap-1">
+                        <p className="text-xl">{currentNum}.</p>
+                        {question && (
+                          <p
+                            className="text-xl"
+                            dangerouslySetInnerHTML={{ __html: question }}
+                          />
+                        )}
+                      </div>
                       {questionImage && (
-                        <img src={`${questionImage}`} alt="question image" />
+                        <img
+                          src={`${questionImage}`}
+                          alt="question image"
+                          className="max-w-80"
+                        />
                       )}
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -166,6 +173,7 @@ export default function JambExam() {
             {/* the lower question navigation pane  */}
             <div className=" flex flex-wrap justify-center gap-4 rounded-xl bg-background px-4 py-4 shadow-xl md:p-10 md:px-8 ">
               {questions.data.map((num, index) => {
+                console.log(num);
                 const isCurrentQuestion = index + 1 === currentNum;
                 const currentOpt = options.filter(
                   (option) => option.num === index + 1,

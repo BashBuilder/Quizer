@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Calculator } from "lucide-react";
 import ExamCalculator from "./ExamCalculator";
+import { useNavigate } from "react-router-dom";
 
 interface ExamTimer {
   seconds: number;
@@ -18,9 +19,9 @@ export default function CounterDownTimer() {
   });
   const { timer, submitAnswer, endExam } = useJambContext();
   const [isCalculatorShown, setIsCalculatorShown] = useState(false);
-  // const router = useRouter();
-  // const pathname = usePathname();
   const { duration, isExamStarted } = timer;
+
+  const navigate = useNavigate();
 
   const startTimer = () => {
     let examTime: { duration: number; isExamStarted: boolean } = {
@@ -34,6 +35,7 @@ export default function CounterDownTimer() {
       if (timeRemaining <= 0) {
         submitAnswer();
         endExam();
+        navigate("/Jambresult");
         clearInterval(countdown);
       } else {
         const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
@@ -44,6 +46,7 @@ export default function CounterDownTimer() {
           duration: timeRemaining / 1000,
           isExamStarted: true,
         };
+        console.log(examTime.duration);
         localStorage.setItem("examTime", JSON.stringify(examTime));
       }
     };
@@ -53,6 +56,7 @@ export default function CounterDownTimer() {
   };
 
   useEffect(() => {
+    console.log(isExamStarted);
     if (isExamStarted) {
       startTimer();
     } else {
@@ -60,10 +64,6 @@ export default function CounterDownTimer() {
     }
     // eslint-disable-next-line
   }, [isExamStarted]);
-
-  useEffect(() => {
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <article className="flex items-center justify-end gap-1 md:right-[12%]">

@@ -38,45 +38,103 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     isExamStarted: false,
   });
 
+  // setTimer({ duration: 7200, isExamStarted: true });
+  // localStorage.setItem(
+  //   "examTime",
+  //   JSON.stringify({ duration: 7200, isExamStarted: true }),
+  // );
+
   const fetchQuestions = async (newSubjects: string[]) => {
     try {
       const token = "ALOC-caa562dfeb1a7de83a69";
       const firestoreQuestion = collection(db, "englishQuestions");
       const englishSnapshot = await getDocs(firestoreQuestion);
+      let isLiteratureIncluded = false;
 
       // @ts-expect-error "englishQuestions has any types"
       const englishQeustion = [];
+
       englishSnapshot.forEach((doc) => englishQeustion.push(doc.data()));
       const englishData: Questions = {
         subject: "english",
         // @ts-expect-error "englishQuestions has any types"
         data: englishQeustion[0].data,
       };
+      let literatureData: Questions = { subject: "literature", data: [] };
       const newQuestions = [];
-      for (const subject of newSubjects) {
-        const url = `https://questions.aloc.com.ng/api/v2/m/40?subject=${subject}&year=2020`;
-        const response = await fetch(url, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            AccessToken: token,
-          },
-          method: "GET",
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+      try {
+        let url;
+        for (const subject of newSubjects) {
+          if (subject === "literature") {
+            // eslint-disable-next-line
+            const lit: any[] = [];
+            isLiteratureIncluded = true;
+
+            const firestoreQuestion = collection(db, "englishlit");
+            const literatureSnapshot = await getDocs(firestoreQuestion);
+            literatureSnapshot.forEach((doc) => lit.push(doc.data()));
+            literatureData = {
+              subject: "literature",
+              data: lit[0].data,
+            };
+          } else {
+            url = `https://questions.aloc.com.ng/api/v2/m/40?subject=${subject}&type=utme`;
+            const response = await fetch(url, {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                AccessToken: token,
+              },
+              method: "GET",
+            });
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            newQuestions.push({ subject: data.subject, data: data.data });
+            console.log(newQuestions);
+          }
         }
-        const data = await response.json();
-        newQuestions.push({ subject: data.subject, data: data.data });
-        console.log(newQuestions);
+      } catch (error) {
+        console.log(error);
       }
 
-      const newCombinedQuestions = [englishData, ...newQuestions];
+      let newCombinedQuestions = [];
+      if (isLiteratureIncluded) {
+        newCombinedQuestions = [englishData, literatureData, ...newQuestions];
+      } else {
+        newCombinedQuestions = [englishData, literatureData, ...newQuestions];
+      }
+
       setAllQuestions(newCombinedQuestions);
       const EXAM_TIME: { duration: number; isExamStarted: boolean } = {
         duration: 7200,
         isExamStarted: true,
       };
+
+      const startingQuestionState = {
+        selectedOptions: [],
+        answers: [],
+        score: 0,
+        subjectScore: [],
+        isSubmitted: false,
+        subjects: [],
+        examStatus: true,
+      };
+      const startingAnswerState: GetAnswersProps = {
+        questions: newCombinedQuestions,
+        subjects: ["english", ...newSubjects],
+        isSubmitted: false,
+        selectedOptions: [],
+      };
+
+      setTimer(EXAM_TIME);
+      setQuestionStates(startingQuestionState);
+      getAnswers(startingAnswerState);
+      localStorage.setItem(
+        "questionStates",
+        JSON.stringify(startingQuestionState),
+      );
       localStorage.setItem("examTime", JSON.stringify(EXAM_TIME));
       localStorage.setItem(
         "allQuestions",
@@ -209,15 +267,24 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     const questionStatesJson = localStorage.getItem("questionStates");
     const examSubmitted = examSubmittedJson && JSON.parse(examSubmittedJson);
 
+    const timerJson = localStorage.getItem("examTime");
+    timerJson && setTimer(JSON.parse(timerJson));
+
     if (allQuestionJson) {
       const allQuestionReload = JSON.parse(allQuestionJson);
       setAllQuestions(allQuestionReload);
       setSubjectQuestion(allQuestionReload[0]);
+      setQuestionStates((prev) => ({
+        ...prev,
+        isSubmitted: examSubmitted.isSubmitted,
+      }));
 
       const allSubjects: string[] = [];
       allQuestionReload.forEach((question: Questions) =>
         allSubjects.push(question.subject),
       );
+
+      console.log(examSubmitted.isSubmitted);
       getAnswers({
         questions: allQuestionReload,
         subjects: allSubjects,

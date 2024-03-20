@@ -70,29 +70,19 @@ export default function SetupForm() {
       examType: "utme",
       subjects: [
         "english",
-        "physics",
-        "chemistry",
-        "biology",
-        "literature",
-        "crs",
         "accounting",
-        "mathematics",
+        "biology",
+        "chemistry",
+        "crk",
+        "commerce",
         "economics",
+        "literature",
+        "mathematics",
+        "physics",
       ],
     },
   });
   const selectedSubjects = watch("subjects");
-
-  const fetchExamQuestions = async () => {
-    try {
-      const newSubjects = subjects.splice(1, 3);
-      console.log(newSubjects);
-      await fetchQuestions(newSubjects);
-      navigate("/jambexam");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getTrials = async () => {
     const usersDb = collection(db, "users");
@@ -115,13 +105,15 @@ export default function SetupForm() {
     setTrialsDb((prev) => ({ ...prev, trials: newTrials - 1 }));
   };
 
-  const startExam: SubmitHandler<CbtShemaType> = async (data) => {
+  // eslint-disable-next-line
+  const startExam: SubmitHandler<CbtShemaType> = async () => {
     try {
-      console.log(data);
       if (trials > 0) {
-        await fetchExamQuestions();
+        const newSubjects = subjects.splice(1, 3);
+        console.log(newSubjects);
+        await fetchQuestions(newSubjects);
+        navigate("/jambexam");
         await getTrials();
-        console.log(trials);
       } else {
         alert("You have exhausted all your trials");
       }
