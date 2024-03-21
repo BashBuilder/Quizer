@@ -38,12 +38,6 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     isExamStarted: false,
   });
 
-  // setTimer({ duration: 7200, isExamStarted: true });
-  // localStorage.setItem(
-  //   "examTime",
-  //   JSON.stringify({ duration: 7200, isExamStarted: true }),
-  // );
-
   const fetchQuestions = async (newSubjects: string[]) => {
     try {
       const token = "ALOC-caa562dfeb1a7de83a69";
@@ -207,8 +201,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
     localStorage.setItem("questionStates", JSON.stringify(questionStates));
   };
-
-  const submitAnswer = () => {
+  const submitAnswer = async () => {
     const submittedDetails = {
       isSubmitted: true,
       selectedOptions: questionStates.selectedOptions,
@@ -242,6 +235,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       (acc, subject) => acc + subject.score,
       0,
     );
+
     setQuestionStates((prev) => ({
       ...prev,
       isSubmitted: true,

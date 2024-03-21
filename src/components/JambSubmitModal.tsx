@@ -29,13 +29,14 @@ export default function JambSubmitModal({
       setLoadingState(true);
       await endExam();
       await submitAnswer();
-      setIsSubmitModalOpen((prev) => !prev);
       const uploadData = { subjectScore, score, email };
       const userScore = collection(db, "userScore");
       await addDoc(userScore, uploadData);
       navigate("/jambresult");
+      setIsSubmitModalOpen((prev) => !prev);
     } catch (error) {
       console.log("The submit error is : ", error);
+      navigate("/jambresult");
     } finally {
       setLoadingState(false);
     }

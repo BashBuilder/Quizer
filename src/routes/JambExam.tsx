@@ -121,33 +121,38 @@ export default function JambExam() {
                       )}
                     </div>
                     <div className="flex flex-col items-start gap-2">
-                      {Object.keys(option).map((opt: string, index) => {
-                        const isOptionSelected = currentOption === opt;
-                        const isOptionCorrect =
-                          currentAnswer === currentOption && isOptionSelected;
-                        const isNonChosenCorrectAnswer = currentAnswer === opt;
-                        return (
-                          <button
-                            key={index}
-                            className={`hover: rounded-md px-4 py-2 text-left ${isSubmitted ? (isOptionCorrect ? correctColor : isNonChosenCorrectAnswer ? wrongColor : isOptionSelected && selectedColor) : isOptionSelected ? selectedColor : "bg-slate-50 hover:bg-slate-200"}`}
-                            onClick={() =>
-                              updateAnswers({
-                                answer: opt,
-                                num: qIndex + 1,
-                                subject,
-                              })
-                            }
-                            disabled={isSubmitted}
-                          >
-                            <span dangerouslySetInnerHTML={{ __html: opt }} />
-                            <span className="pr-4">.</span>
-                            <span
-                              // @ts-expect-error "options has any type"
-                              dangerouslySetInnerHTML={{ __html: option[opt] }}
-                            />
-                          </button>
-                        );
-                      })}
+                      {Object.keys(option)
+                        .sort()
+                        .map((opt: string, index) => {
+                          const isOptionSelected = currentOption === opt;
+                          const isOptionCorrect =
+                            currentAnswer === currentOption && isOptionSelected;
+                          const isNonChosenCorrectAnswer =
+                            currentAnswer === opt;
+                          return (
+                            <button
+                              key={index}
+                              className={`hover: rounded-md px-4 py-2 text-left ${isSubmitted ? (isOptionCorrect ? correctColor : isNonChosenCorrectAnswer ? wrongColor : isOptionSelected && selectedColor) : isOptionSelected ? selectedColor : "bg-slate-50 hover:bg-slate-200"}`}
+                              onClick={() =>
+                                updateAnswers({
+                                  answer: opt,
+                                  num: qIndex + 1,
+                                  subject,
+                                })
+                              }
+                              disabled={isSubmitted}
+                            >
+                              <span dangerouslySetInnerHTML={{ __html: opt }} />
+                              <span className="pr-4">.</span>
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  // @ts-expect-error "options has any type"
+                                  __html: option[opt],
+                                }}
+                              />
+                            </button>
+                          );
+                        })}
                     </div>
                   </article>
                 );

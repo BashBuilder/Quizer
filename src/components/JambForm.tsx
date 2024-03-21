@@ -28,18 +28,10 @@ export default function SetupForm() {
   const [subjects, setSubjects] = useState<string[]>(["english"]);
   const navigate = useNavigate();
 
-  const {
-    user,
-    // trialsDb,
-    setTrialsDb,
-  } = useAuthContext();
+  const { user, trialsDb, setTrialsDb } = useAuthContext();
   const { fetchQuestions } = useJambContext();
   const { email } = user;
-  // const {
-  //  databaseID,
-  // trials,
-  // } = trialsDb;
-  const trials = 1;
+  const { trials } = trialsDb;
 
   // Zod schema for the jamb question fetcching
   const CbtSchema = z.object({
