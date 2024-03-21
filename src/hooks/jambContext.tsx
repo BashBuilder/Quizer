@@ -97,7 +97,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       if (isLiteratureIncluded) {
         newCombinedQuestions = [englishData, literatureData, ...newQuestions];
       } else {
-        newCombinedQuestions = [englishData, literatureData, ...newQuestions];
+        newCombinedQuestions = [englishData, ...newQuestions];
       }
 
       setAllQuestions(newCombinedQuestions);
@@ -243,6 +243,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       subjectScore: formattedSubjectScores,
     }));
   };
+
   const endExam = () => {
     const examTime = {
       duration: 0,

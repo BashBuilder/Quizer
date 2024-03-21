@@ -175,6 +175,17 @@ export default function JambExam() {
                 </Button>
               </div>
             </div>
+
+            {isSubmitted && currentQuestion.solution && (
+              <div className=" mb-6 flex flex-col flex-wrap justify-center gap-4 rounded-xl bg-background px-4 py-4 shadow-xl md:p-10 md:px-8 ">
+                <h3>Explanation</h3>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: currentQuestion.solution,
+                  }}
+                />
+              </div>
+            )}
             {/* the lower question navigation pane  */}
             <div className=" flex flex-wrap justify-center gap-4 rounded-xl bg-background px-4 py-4 shadow-xl md:p-10 md:px-8 ">
               {questions.data.map((num, index) => {
