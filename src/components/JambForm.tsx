@@ -69,6 +69,7 @@ export default function SetupForm() {
         "commerce",
         "economics",
         "literature",
+        "government",
         "mathematics",
         "physics",
       ],
