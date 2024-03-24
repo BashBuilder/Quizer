@@ -46,7 +46,6 @@ export default function CounterDownTimer() {
           duration: timeRemaining / 1000,
           isExamStarted: true,
         };
-        console.log(examTime.duration);
         localStorage.setItem("examTime", JSON.stringify(examTime));
       }
     };
@@ -56,11 +55,8 @@ export default function CounterDownTimer() {
   };
 
   useEffect(() => {
-    console.log(isExamStarted);
     if (isExamStarted) {
       startTimer();
-    } else {
-      // if (pathname === "/exam") router.push("/results");
     }
     // eslint-disable-next-line
   }, [isExamStarted]);

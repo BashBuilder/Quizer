@@ -22,6 +22,7 @@ export interface AuthContextProps {
     isEmailVerified: boolean;
   };
   isLogin: boolean;
+  confirmVerification: () => void;
   changeLoginState: () => void;
   trialsDb: { databaseID: string; trials: number };
   setTrialsDb: React.Dispatch<

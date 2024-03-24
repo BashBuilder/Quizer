@@ -94,14 +94,17 @@ export default function JambExam() {
                     key={qIndex}
                     className={` ${qIndex === questionIndex ? "flex flex-col gap-4" : "hidden"} `}
                   >
-                    {currentQuestion.section && (
-                      <p
-                        className=" text-xl font-semibold first-letter:capitalize "
-                        dangerouslySetInnerHTML={{
-                          __html: currentQuestion.section,
-                        }}
-                      />
-                    )}
+                    {currentQuestion.section &&
+                      !currentQuestion.section.includes("SOLUTION") &&
+                      !currentQuestion.section.includes("solution") &&
+                      !currentQuestion.section.includes("Solution") && (
+                        <p
+                          className=" text-xl font-semibold first-letter:capitalize "
+                          dangerouslySetInnerHTML={{
+                            __html: currentQuestion.section,
+                          }}
+                        />
+                      )}
                     <div className="flex  flex-col gap-4  ">
                       <div className="flex gap-1">
                         <p className="text-xl">{currentNum}.</p>

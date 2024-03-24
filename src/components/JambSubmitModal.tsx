@@ -1,7 +1,4 @@
-import { useAuthContext } from "@/hooks/authContext";
 import { useJambContext } from "@/hooks/jambContext";
-import { db } from "@/utils/config";
-import { addDoc, collection } from "firebase/firestore";
 import { Loader2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -17,26 +14,18 @@ export default function JambSubmitModal({
   setIsSubmitModalOpen,
 }: SubmitModalProps) {
   const navigate = useNavigate();
-  const { questionStates, endExam, submitAnswer } = useJambContext();
-  const { user } = useAuthContext();
+  const { endExam, submitAnswer } = useJambContext();
   const [loadingState, setLoadingState] = useState(false);
-
-  const { subjectScore, score } = questionStates;
-  const { email } = user;
 
   const submitQuestions = async () => {
     try {
       setLoadingState(true);
       await endExam();
       await submitAnswer();
-      const uploadData = { subjectScore, score, email };
-      const userScore = collection(db, "userScore");
-      await addDoc(userScore, uploadData);
       navigate("/jambresult");
       setIsSubmitModalOpen((prev) => !prev);
     } catch (error) {
       console.log("The submit error is : ", error);
-      navigate("/jambresult");
     } finally {
       setLoadingState(false);
     }

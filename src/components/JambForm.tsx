@@ -28,10 +28,9 @@ export default function SetupForm() {
   const [subjects, setSubjects] = useState<string[]>(["english"]);
   const navigate = useNavigate();
 
-  const { user, trialsDb, setTrialsDb } = useAuthContext();
+  const { user, setTrialsDb } = useAuthContext();
   const { fetchQuestions } = useJambContext();
   const { email } = user;
-  const { trials } = trialsDb;
 
   // Zod schema for the jamb question fetcching
   const CbtSchema = z.object({
@@ -77,38 +76,33 @@ export default function SetupForm() {
   });
   const selectedSubjects = watch("subjects");
 
-  const getTrials = async () => {
-    const usersDb = collection(db, "users");
-    // @ts-expect-error "all"
-    const allUsersEmail = [];
-    const snapshot = await getDocs(usersDb);
-    snapshot.forEach((doc) =>
-      allUsersEmail.push({ id: doc.id, data: doc.data() }),
-    );
-    // @ts-expect-error "all"
-    const userId = allUsersEmail.filter(
-      (dbUser) => dbUser.data.userEmail === email,
-    )[0];
-    const currentUserRef = doc(db, "users", userId.id);
-    const currentUserDoc1 = await getDoc(currentUserRef);
-    const newDoc = currentUserDoc1.data();
-    // @ts-expect-error "all"
-    const newTrials = newDoc.trials;
-    await updateDoc(currentUserRef, { trials: newTrials - 1 });
-    setTrialsDb((prev) => ({ ...prev, trials: newTrials - 1 }));
-  };
-
   // eslint-disable-next-line
   const startExam: SubmitHandler<CbtShemaType> = async () => {
     try {
-      if (trials > 0) {
+      const usersDb = collection(db, "users");
+      // @ts-expect-error "all"
+      const allUsersEmail = [];
+      const snapshot = await getDocs(usersDb);
+      snapshot.forEach((doc) =>
+        allUsersEmail.push({ id: doc.id, data: doc.data() }),
+      );
+      // @ts-expect-error "all"
+      const userId = allUsersEmail.filter(
+        (dbUser) => dbUser.data.userEmail === email,
+      )[0];
+      const currentUserRef = doc(db, "users", userId.id);
+      const currentUserDoc1 = await getDoc(currentUserRef);
+      const newDoc = currentUserDoc1.data();
+      // @ts-expect-error "all"
+      const newTrials = newDoc.trials;
+      if (newTrials > 0) {
         const newSubjects = subjects.splice(1, 3);
-        console.log(newSubjects);
         await fetchQuestions(newSubjects);
         navigate("/jambexam");
-        await getTrials();
+        await updateDoc(currentUserRef, { trials: newTrials - 1 });
+        setTrialsDb((prev) => ({ ...prev, trials: newTrials - 1 }));
       } else {
-        alert("You have exhausted all your trials");
+        alert("You have no trials");
       }
     } catch (error) {
       console.error("The error from fetching is ", error);

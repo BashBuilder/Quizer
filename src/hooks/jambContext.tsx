@@ -11,8 +11,9 @@ import {
   SubjectScores,
 } from "@/data/jambTypes";
 import { db } from "@/utils/config";
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useAuthContext } from "./authContext";
 
 const JambContext = createContext<JambContextProps | undefined>(undefined);
 
@@ -21,6 +22,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
   const [subjectQuestion, setSubjectQuestion] = useState<Questions | null>(
     null,
   );
+  const { user } = useAuthContext();
   const [questionStates, setQuestionStates] = useState<QuestionStateTypes>({
     selectedOptions: [],
     answers: [],
@@ -235,6 +237,14 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       (acc, subject) => acc + subject.score,
       0,
     );
+
+    const uploadData = {
+      score,
+      subjectScore: formattedSubjectScores,
+      email: user.email,
+    };
+    const userScore = collection(db, "userScore");
+    await addDoc(userScore, uploadData);
 
     setQuestionStates((prev) => ({
       ...prev,

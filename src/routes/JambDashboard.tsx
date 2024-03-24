@@ -25,7 +25,7 @@ export default function JambDashboard() {
         snapshot.forEach((doc) => allUsersScores.push({ data: doc.data() }));
         const databaseScore = allUsersScores.filter(
           // eslint-disable-next-line
-          (dbUser: any) => dbUser.data.userEmail === email,
+          (dbUser: any) => dbUser.data.email === email,
         );
         setDatabaseResults(databaseScore);
       } catch (error) {
@@ -37,7 +37,7 @@ export default function JambDashboard() {
   }, [email, isSubmitted]);
 
   return (
-    <div className="h-screen bg-green-100 ">
+    <div className="min-h-screen bg-green-100 ">
       <JambNavbar />
       <section className="grid pt-32 md:grid-cols-12">
         <div className="col-span-6  ">
