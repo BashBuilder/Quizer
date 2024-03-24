@@ -1,14 +1,20 @@
 import { useAuthContext } from "@/hooks/authContext";
+import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function VerifyEmail() {
-  const { logout, user, confirmVerification } = useAuthContext();
+  const { logout, user, isAuthenticated } = useAuthContext();
   const { email } = user;
   const navigate = useNavigate();
 
   const handleReLogIn = async () => {
     logout();
     navigate("/auth");
+  };
+  const handleConfirm = async () => {
+    // await confirmVerification();
+    navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -21,10 +27,14 @@ export default function VerifyEmail() {
       </div>
       <div className="flex flex-wrap items-center justify-center gap-4 ">
         <button
-          onClick={confirmVerification}
+          onClick={handleConfirm}
           className="bg-green-600 text-white transition duration-300"
         >
-          I have Verified
+          {isAuthenticated.loading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            "I have Verified"
+          )}
         </button>
         <button
           onClick={handleReLogIn}

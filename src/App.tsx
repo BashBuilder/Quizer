@@ -39,7 +39,13 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={auth && !isEmailVerified ? <VerifyEmail /> : <Home />}
+            element={
+              auth && !isEmailVerified ? (
+                <VerifyEmail />
+              ) : (
+                <Home />
+              )
+            }
           />
           <Route path="/how" element={<How />} />
           <Route path="/about" element={<About />} />

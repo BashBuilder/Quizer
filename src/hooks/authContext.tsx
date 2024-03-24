@@ -125,17 +125,6 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     }
   };
 
-  const confirmVerification = async () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsAuthenticated((prev) => ({
-          ...prev,
-          isEmailVerified: user.emailVerified,
-        }));
-      }
-    });
-  };
-
   const logout = async () => {
     localStorage.removeItem("quizerUser");
     setUser({ name: "", token: "", email: "" });
@@ -147,6 +136,7 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     // FIREBASE LOGOUT DOWN HERE
     await signOut(auth);
   };
+
   // authenticate on reload
   useLayoutEffect(() => {
     setIsAuthenticated({ state: false, loading: true, isEmailVerified: false });
@@ -210,7 +200,6 @@ const AuthProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
     changeLoginState,
     trialsDb,
     setTrialsDb,
-    confirmVerification,
   };
 
   return (
