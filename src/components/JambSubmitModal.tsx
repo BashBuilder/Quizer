@@ -20,8 +20,8 @@ export default function JambSubmitModal({
   const submitQuestions = async () => {
     try {
       setLoadingState(true);
-      await endExam();
-      await submitAnswer();
+      endExam();
+      submitAnswer();
       navigate("/jambresult");
       setIsSubmitModalOpen((prev) => !prev);
     } catch (error) {

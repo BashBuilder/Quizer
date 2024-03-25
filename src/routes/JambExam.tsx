@@ -95,9 +95,12 @@ export default function JambExam() {
                     className={` ${qIndex === questionIndex ? "flex flex-col gap-4" : "hidden"} `}
                   >
                     {currentQuestion.section &&
-                      !currentQuestion.section.includes("SOLUTION") &&
-                      !currentQuestion.section.includes("solution") &&
-                      !currentQuestion.section.includes("Solution") && (
+                      !(
+                        subject === "mathematics" &&
+                        (currentQuestion.section.includes("SOLUTION") ||
+                          currentQuestion.section.includes("solution") ||
+                          currentQuestion.section.includes("Solution"))
+                      ) && (
                         <p
                           className=" text-xl font-semibold first-letter:capitalize "
                           dangerouslySetInnerHTML={{
