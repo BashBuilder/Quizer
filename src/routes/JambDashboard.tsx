@@ -55,7 +55,7 @@ export default function JambDashboard() {
                 </p>
                 <div className="mt-10">
                   <Link
-                    to="/cbt/examform"
+                    to="/jambform"
                     className="rounded-md bg-red-500 px-4 py-2 text-white hover:opacity-80"
                   >
                     Take exam
