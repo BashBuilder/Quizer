@@ -54,7 +54,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
       const englishData: Questions = {
         subject: "english",
         // @ts-expect-error "englishQuestions has any types"
-        data: englishQeustion[0].data,
+        data: englishQeustion[1].data,
       };
       let literatureData: Questions = { subject: "literature", data: [] };
       const newQuestions = [];
@@ -71,7 +71,7 @@ const JambProvider: React.FC<ProviderChildrenProps> = ({ children }) => {
             literatureSnapshot.forEach((doc) => lit.push(doc.data()));
             literatureData = {
               subject: "literature",
-              data: lit[2].data,
+              data: lit[1].data,
             };
           } else {
             url = `https://questions.aloc.com.ng/api/v2/m/40?subject=${subject}&type=utme`;
